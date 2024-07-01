@@ -46,11 +46,11 @@ namespace Soul
         //Movement
 
         private FPPlayerCharacter _character;
-        private FPPlayerControls _controls; //new input system first try
-                                            // Mouse look
+        private FPPlayerControls _controls;
 
         [Space(15.0f)]
         public bool invertLook = true;
+
         [Tooltip("Mouse look sensitivity")]
         public Vector2 mouseSensitivity = new Vector2(1.0f, 1.0f);
 
@@ -62,7 +62,7 @@ namespace Soul
 
         private void Awake()
         {
-            //_character = GetComponent<FPPlayerCharacter>();
+            _character = GetComponent<FPPlayerCharacter>();
             _controls = new FPPlayerControls();
             playerInput = GetComponent<PlayerInput>();
 
