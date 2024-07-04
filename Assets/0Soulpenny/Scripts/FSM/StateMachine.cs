@@ -5,44 +5,44 @@ using UnityEngine;
 
 namespace Soul
 {
-    public abstract class StateMachine<EState> : MonoBehaviour where EState : Enum
+    public abstract class StateMachine: MonoBehaviour
     {
-        protected Dictionary<EState, BaseState<EState>> States = new Dictionary<EState, BaseState<EState>>();            
-        
-        protected BaseState<EState> CurrentState;
-
+        protected IState currentState;
         protected bool isTransitioningState = false;
-        void Start()
-        {
-            CurrentState.Enter();
 
-        }
-        void Update()
+        protected virtual void Start()
         {
-            EState nextStateKey = CurrentState.GetNextState();
-            if(!isTransitioningState && nextStateKey.Equals(CurrentState.StateKey))
+            if(currentState != null)
             {
-                CurrentState.Execute();
-
+                currentState.Enter();
             }
-            else if(!isTransitioningState)
-            {
-                TransitionToState(nextStateKey);
-            }
-
         }
 
-        public void TransitionToState(EState stateKey)
+        protected virtual void Update()
         {
-            CurrentState.Exit();
-            CurrentState = States[stateKey];
+            if (currentState != null) { return; }
+
+            IState nextState = currentState.GetNextState();
+            if (!isTransitioningState && nextState != currentState)
+            {
+                TransitionToState(nextState);
+            }
+
         }
 
-        
+        public void TransitionToState(IState nextState)
+        {
+            if (nextState == null)
+            {
+                return;
+            }
 
-
-
-
+            isTransitioningState = true;
+            currentState.Exit();
+            currentState = nextState;
+            currentState.Enter();
+            isTransitioningState= false;
+        }
 
     }
 

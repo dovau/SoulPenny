@@ -42,18 +42,18 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Primary",
+                    "name": "Sprint",
                     "type": "Button",
-                    "id": "2ba4833b-d492-4e99-a202-d9eb27c9b205",
+                    "id": "32873570-f284-438d-94f1-6e680b04555e",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Sprint",
+                    "name": "Primary",
                     "type": "Button",
-                    "id": "32873570-f284-438d-94f1-6e680b04555e",
+                    "id": "2ba4833b-d492-4e99-a202-d9eb27c9b205",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -130,6 +130,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "Look",
+                    "type": "Value",
+                    "id": "0f961698-e3ae-4f45-a31a-cb1e8bc3b27b",
+                    "expectedControlType": "Vector2",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
                 }
             ],
             "bindings": [
@@ -399,17 +408,6 @@
                 },
                 {
                     "name": "",
-                    "id": "95ff2fb1-2ef3-4882-8225-b6aed5489a6c",
-                    "path": "<Keyboard>/leftShift",
-                    "interactions": "Hold(duration=0.1,pressPoint=0.1)",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Sprint",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
                     "id": "e5baf78b-1741-4ee7-bdbb-08064245a97c",
                     "path": "<Keyboard>/leftAlt",
                     "interactions": "Press(pressPoint=0.2)",
@@ -429,6 +427,72 @@
                     "action": "Reload",
                     "isComposite": false,
                     "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "95ff2fb1-2ef3-4882-8225-b6aed5489a6c",
+                    "path": "<Keyboard>/leftShift",
+                    "interactions": "Hold(duration=0.1,pressPoint=0.1)",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Sprint",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "2D Vector",
+                    "id": "8d8e5d68-a2a2-4f54-a51b-cfdd9146b0da",
+                    "path": "2DVector",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Look",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "up",
+                    "id": "cab40b4b-198c-45ce-8e67-ad156a5389e0",
+                    "path": "<Mouse>/delta/y",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Look",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "down",
+                    "id": "732103a3-c0aa-40ff-ae92-5ccdc7980202",
+                    "path": "<Mouse>/delta/y",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Look",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "left",
+                    "id": "421381fc-58a5-48bf-b98f-6c4f4f9f449b",
+                    "path": "<Mouse>/delta/x",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Look",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "right",
+                    "id": "ccd9f399-59db-43d7-ac47-eb9cc9e9cc0e",
+                    "path": "<Mouse>/delta/x",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Look",
+                    "isComposite": false,
+                    "isPartOfComposite": true
                 }
             ]
         }
