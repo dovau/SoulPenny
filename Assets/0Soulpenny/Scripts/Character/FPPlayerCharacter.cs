@@ -9,14 +9,14 @@ using Unity.VisualScripting;
 using UnityEngine.Animations;
 using UnityEngine.InputSystem.Controls;
 using UnityEngine.InputSystem.Composites;
+using ECM2.Examples.FirstPerson;
+using System;
 
 namespace Soul
 {
     public class FPPlayerCharacter : Character
     {
-        //Removing the inputmanager or FPInput in the old system completely
-        //I can directly access FPPlayerControls, which is the new input system asset 
-        //public InputManagerOld input;
+
 
         private FPPlayerControls controls;
         public FPPlayerControls Controls => controls;
@@ -44,12 +44,13 @@ namespace Soul
         }
         private void SubscribeToInputEvents()
         {
-            //Debug.Log("Subscribing to Input Events");
-            //controls.Base.Look.started += HandleMouseLook;
-            //controls.Base.Look.performed += HandleMouseLook;
+
+
+
         }
 
-        protected void Update()
+
+        private void Update()
         {
             HandleMouseLook();
             Debug.Log("Camera pitch = " + _cameraPitch);
@@ -59,60 +60,64 @@ namespace Soul
         {
             if (value != 0.0f)
                 AddYawInput(value);
+
         }
 
         public virtual void AddControlPitchInput(float value, float minPitch = -80.0f, float maxPitch = 80.0f)
         {
-            if(value != 0.0f)
+            if (value != 0.0f)
             {
                 _cameraPitch = MathLib.ClampAngle(_cameraPitch, minPitch, maxPitch);
             }
         }
 
-        //protected virtual void UpdateCameraParentRotation()
-        //{
-        //    cameraParent.transform.localRotation = Quaternion.Euler(_cameraPitch, 0.0f, 0.0f);
-        //}
-
-        //protected virtual void LateUpdate()
-        //{
-        //    UpdateCameraParentRotation();
-        //}
+        private void OnGUI()
+        {
+            
+        }
         public void HandleMouseLook()
         {
-            Vector2 lookInput = new Vector2
-            {
-                x = UnityEngine.Input.GetAxisRaw("Mouse X"),
-                y = UnityEngine.Input.GetAxisRaw("Mouse Y")
-            };
-
+            //Vector2 lookInput = new Vector2
+            //{
+            //    x = UnityEngine.Input.GetAxisRaw("Mouse X"),
+            //    y = UnityEngine.Input.GetAxisRaw("Mouse Y")
+            //};
+            Vector2 lookInput = controls.Base.Look.ReadValue<Vector2>();
             lookInput *= mouseSensitivity;
+            Debug.Log(lookInput);
 
+            //AddControlYawInput(lookInput.x);
+            //AddControlPitchInput(invertLook ? -lookInput.y : lookInput.y);
             AddControlYawInput(lookInput.x);
             AddControlPitchInput(invertLook ? -lookInput.y : lookInput.y);
+            Debug.Log("Processed? " + lookInput);
         }
-        //public void HandleMouseLook(InputAction.CallbackContext context)
-        //{
+        protected virtual void UpdateCameraParentRotation()
+        {
+            cameraParent.transform.localRotation = Quaternion.Euler(_cameraPitch, 0.0f, 0.0f);
 
-        //    Vector2 lookInput = new Vector2
-        //    {
-        //        x = controls.Base.Look.ReadValue<Vector2>().x,
-        //        y = controls.Base.Look.ReadValue<Vector2>().y
-        //    };
-
-        //    Debug.Log(lookInput);
-        //    lookInput *= mouseSensitivity;
-
-        //    AddControlYawInput(lookInput.x);
-        //    AddControlPitchInput(invertLook ? -lookInput.y : lookInput.y);
-        //}
-
+            //z9999 see if camera pitch should be replaced by OR affected by lookinput, cause as of now look input is being read. I guess.
+            // 240707 - 1238
+        }
+        protected virtual void LateUpdate()
+        {
+            UpdateCameraParentRotation();
+        }
         protected override void Reset()
         {
-            base.Reset();
-            SetRotationMode(RotationMode.None);
+            // Call base method implementation
 
+            base.Reset();
+
+            // Disable character's rotation,
+            // it is handled by the AddControlYawInput method 
+
+            SetRotationMode(RotationMode.None);
         }
+
+
+
+
 
 
         protected override void OnEnable()

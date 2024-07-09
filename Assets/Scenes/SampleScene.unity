@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.1802848, g: 0.22571564, b: 0.306923, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028468, g: 0.22571564, b: 0.30692303, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -5371,8 +5371,8 @@ MonoBehaviour:
   _brakingDecelerationWalking: 20
   _groundFriction: 8
   _canEverCrouch: 1
-  _crouchedHeight: 1.25
-  _unCrouchedHeight: 2
+  _crouchedHeight: 5.49
+  _unCrouchedHeight: 3.78
   _maxWalkSpeedCrouched: 3
   _maxFallSpeed: 40
   _brakingDecelerationFalling: 0
@@ -5683,7 +5683,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8396127873297269901}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6c4aabc71b7d0e74f8d59eed188db70e, type: 3}
   m_Name: 
