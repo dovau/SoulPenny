@@ -2,6 +2,7 @@ using ECM2;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -50,6 +51,29 @@ namespace Soul
         private void Awake()
         {
             Debug.Log("MovementStateMachine Awake");
+            GetCharacter();
+            
+
+        }
+
+        protected override void Start()
+        {
+            base.Start();
+
+            BindControls();
+
+            BindInputActions();
+            
+            SubscribeToInputEvents();
+
+            InitializeStates();
+
+
+            currentState = standingState; // Set initial state
+            currentState.Enter();
+        }
+        private void GetCharacter()
+        {
             _character = GetComponent<FPPlayerCharacter>();
 
             if (_character == null)
@@ -59,15 +83,10 @@ namespace Soul
                 return;
 
             }
-            
-
         }
-
-        protected override void Start()
+        private void BindControls()
         {
-            base.Start();
-
-            controls = _character.Controls;
+            controls = new FPPlayerControls();
 
             if (controls == null)
             {
@@ -75,16 +94,8 @@ namespace Soul
                 this.enabled = false;
                 return;
             }
-            BindInputActions();
-            SubscribeToInputEvents();
-
-            InitializeStates();
-
-
-            currentState = standingState; // Set initial state
-            currentState.Enter();
+            controls.Base.Enable();
         }
-
  
         private void BindInputActions()
         {
@@ -108,7 +119,7 @@ namespace Soul
         protected override void Update()
         {
             base.Update();
-            Debug.Log(moveInput);
+            Debug.Log("Move Input = "+ moveInput);
             CheckForIdleState();
             Debug.Log($"Current State: {currentState}");
 
@@ -180,8 +191,12 @@ namespace Soul
             movementDirection += _character.GetForwardVector() * moveInput.y;
 
             _character.SetMovementDirection(movementDirection);
-
+            
+            
+            // Also try moveinput.normalized or moveinput.normalized.sqrMagnitude
+            //Or actually learn what sqrMagnitude is properly 
             if (moveInput.sqrMagnitude > 0.1f)
+
             {
                 TransitionToState(walkingState);
             }
@@ -263,6 +278,8 @@ namespace Soul
 
         private void HandleSprintInput(InputAction.CallbackContext context)
         {
+            Debug.Log("I'm sprinting!");
+
             // Implement sprint logic here
         }
         private void CheckForIdleState()

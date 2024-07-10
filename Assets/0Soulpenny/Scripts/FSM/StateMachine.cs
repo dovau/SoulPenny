@@ -20,14 +20,14 @@ namespace Soul
 
         protected virtual void Update()
         {
-            if (currentState != null) { return; }
+            if (currentState == null) { return; }
 
             IState nextState = currentState.GetNextState();
             if (!isTransitioningState && nextState != currentState)
             {
                 TransitionToState(nextState);
             }
-
+            currentState.Execute();
         }
 
         public void TransitionToState(IState nextState)

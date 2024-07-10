@@ -79,6 +79,7 @@ namespace Soul
 
             _character.AddControlYawInput(lookInput.x);
             _character.AddControlPitchInput(invertLook ? -lookInput.y : lookInput.y);
+
         }
     }
 }
