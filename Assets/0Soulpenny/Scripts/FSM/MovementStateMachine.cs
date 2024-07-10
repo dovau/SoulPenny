@@ -1,3 +1,4 @@
+using ECM2;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -43,38 +44,48 @@ namespace Soul
 
         private IState standingState;
         private IState walkingState;
+
+        Vector2 moveInput;
+
         private void Awake()
         {
             Debug.Log("MovementStateMachine Awake");
             _character = GetComponent<FPPlayerCharacter>();
+
             if (_character == null)
             {
                 Debug.LogError("FPPlayerCharacter component missing!");
                 this.enabled = false;
                 return;
+
             }
+            
 
         }
 
         protected override void Start()
         {
             base.Start();
+
             controls = _character.Controls;
+
             if (controls == null)
             {
                 Debug.LogError("FPPlayerControls is null!");
                 this.enabled = false;
                 return;
             }
-
             BindInputActions();
+            SubscribeToInputEvents();
+
             InitializeStates();
 
-            SubscribeToInputEvents();
 
             currentState = standingState; // Set initial state
             currentState.Enter();
         }
+
+ 
         private void BindInputActions()
         {
             Debug.Log("Binding Input Actions");
@@ -82,6 +93,7 @@ namespace Soul
             jump = controls.Base.Jump;
             crouch = controls.Base.Crouch;
             sprint = controls.Base.Sprint;
+
         }
 
 
@@ -96,6 +108,7 @@ namespace Soul
         protected override void Update()
         {
             base.Update();
+            Debug.Log(moveInput);
             CheckForIdleState();
             Debug.Log($"Current State: {currentState}");
 
@@ -104,35 +117,108 @@ namespace Soul
             //HandleJump();
         }
 
-        private void SubscribeToInputEvents()
+
+        private void SubscribeToInputEvents() 
         {
             Debug.Log("Subscribing to Input Events");
             movement.performed += HandleMovementInput;
-            movement.canceled += HandleMovementInput;
+            movement.canceled += HandleMovementInput; 
+
+            jump.performed += HandleJumpInput;
+            crouch.performed += HandleCrouchInput;
+            sprint.performed += HandleSprintInput;
+
+            movement.Enable();
+            jump.Enable();
+            crouch.Enable();
+            sprint.Enable();
 
         }
+        private void UnSubscribeFromInputEvents()
+        {
+            Debug.Log("Unsubscribing from Input Events");
+            movement.performed -= HandleMovementInput;
+            movement.canceled -= HandleMovementInput;
 
+            jump.performed -= HandleJumpInput;
+            crouch.performed -= HandleCrouchInput;
+            sprint.performed -= HandleSprintInput;
+
+
+            movement.Disable();
+            jump.Disable();
+            crouch.Disable();
+            sprint.Disable();
+        }
+
+
+
+        //Binding and subscribing on Start cause the nulls I'm getting might be that
+        //OnEnable is too early for it. I'll check script execution order and learn about it
+        ////but for now it's gonna be done on start
+        //private void OnEnable()
+        //{
+        //    BindInputActions();
+
+        //    SubscribeToInputEvents();
+        //}
+
+        private void OnDestroy()
+        {
+            UnSubscribeFromInputEvents();
+        }
         public void HandleMovementInput(InputAction.CallbackContext context)
         {
-            
+            //moveInput = context.ReadValue<Vector2>();
 
-            Vector2 inputMove = new Vector2()
-            {
-                x = Input.GetAxisRaw("Horizontal"),
-                y = Input.GetAxisRaw("Vertical")
-            };
+            moveInput.x=context.ReadValue<Vector2>().x;
+            moveInput.y=context.ReadValue<Vector2>().y;
 
+            Debug.Log(moveInput);
             Vector3 movementDirection = Vector3.zero;
-
-            movementDirection += _character.GetRightVector() * inputMove.x;
-            movementDirection += _character.GetForwardVector() * inputMove.y;
+            movementDirection += _character.GetRightVector() * moveInput.x;
+            movementDirection += _character.GetForwardVector() * moveInput.y;
 
             _character.SetMovementDirection(movementDirection);
-            TransitionToState(walkingState);
 
-
-
+            if (moveInput.sqrMagnitude > 0.1f)
+            {
+                TransitionToState(walkingState);
+            }
+            else
+            {
+                TransitionToState(standingState);
+            }
         }
+        //public void HandleMovementInput()
+        //{
+
+
+        //    Vector2 moveInput = new Vector2()
+        //    {
+        //        x = Input.GetAxisRaw("Horizontal"),
+        //        y = Input.GetAxisRaw("Vertical")
+        //    };
+
+        //    Vector3 movementDirection = Vector3.zero;
+
+        //    movementDirection += _character.GetRightVector() * moveInput.x;
+        //    movementDirection += _character.GetForwardVector() * moveInput.y;
+
+        //    _character.SetMovementDirection(movementDirection);
+        //    //TransitionToState(walkingState);
+
+
+        //    if (moveInput.sqrMagnitude > 0.1f)
+        //    {
+        //        TransitionToState(walkingState);
+        //    }
+        //    else
+        //    {
+        //        TransitionToState(standingState);
+        //    }
+
+        //}
         //public void HandleMovementInput()
         //{
         //    // Movement input, relative to character's view direction
@@ -150,7 +236,35 @@ namespace Soul
 
         //    _character.SetMovementDirection(movementDirection);
         //}
-        
+
+
+
+        private void HandleCrouchInput(InputAction.CallbackContext context)
+        {
+            _character.Crouch();
+        }
+
+        //private void HandleJumpInput()
+        //{
+        //    _character.Jump();
+        //    //if (jumpAction.triggered)
+        //    //{
+        //    //    _character.Jump();
+        //    //}
+        //    //else if (_character.IsGrounded())
+        //    //{
+        //    //    _character.StopJumping();
+        //    //}
+        //}
+        private void HandleJumpInput(InputAction.CallbackContext context)
+        {
+            _character.Jump();
+        }
+
+        private void HandleSprintInput(InputAction.CallbackContext context)
+        {
+            // Implement sprint logic here
+        }
         private void CheckForIdleState()
         {
             Vector2 inputMove = movement.ReadValue<Vector2>();
@@ -160,32 +274,6 @@ namespace Soul
                 TransitionToState(standingState);
             }
         }
-
-        private void HandleCrouch()
-        {
-            _character.Crouch();
-            
-            // old code from when it was in fpinput
-            //    if (crouchAction.triggered)
-            //        _character.Crouch();
-            //    if (crouchAction.WasReleasedThisFrame())
-            //        _character.UnCrouch();
-
-        }
-
-        private void HandleJump()
-        {
-            _character.Jump();
-            //if (jumpAction.triggered)
-            //{
-            //    _character.Jump();
-            //}
-            //else if (_character.IsGrounded())
-            //{
-            //    _character.StopJumping();
-            //}
-        }
-
     }
 
 }

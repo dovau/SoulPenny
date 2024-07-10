@@ -163,13 +163,31 @@ namespace Soul
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""MouseX"",
+                    ""type"": ""PassThrough"",
+                    ""id"": ""9185f039-cc55-430d-a19e-cad0ee135fd5"",
+                    ""expectedControlType"": ""Axis"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""MouseY"",
+                    ""type"": ""PassThrough"",
+                    ""id"": ""fbc69004-a848-4cbb-ad99-aa87a6294d66"",
+                    ""expectedControlType"": ""Axis"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
                 {
                     ""name"": ""WASD"",
                     ""id"": ""c875c90d-0560-4ffa-88f6-58d2c4443f1a"",
-                    ""path"": ""2DVector"",
+                    ""path"": ""2DVector(mode=2)"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -473,6 +491,28 @@ namespace Soul
                     ""action"": ""Look"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""8945e157-9518-4c32-804e-6fc9185d42f9"",
+                    ""path"": ""<Mouse>/delta/x"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""MouseX"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""36aafe9f-2384-44d9-8306-1151cc05f524"",
+                    ""path"": ""<Mouse>/delta/y"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""MouseY"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -496,6 +536,8 @@ namespace Soul
             m_Base_Alternative = m_Base.FindAction("Alternative", throwIfNotFound: true);
             m_Base_Reload = m_Base.FindAction("Reload", throwIfNotFound: true);
             m_Base_Look = m_Base.FindAction("Look", throwIfNotFound: true);
+            m_Base_MouseX = m_Base.FindAction("MouseX", throwIfNotFound: true);
+            m_Base_MouseY = m_Base.FindAction("MouseY", throwIfNotFound: true);
         }
 
         public void Dispose()
@@ -572,6 +614,8 @@ namespace Soul
         private readonly InputAction m_Base_Alternative;
         private readonly InputAction m_Base_Reload;
         private readonly InputAction m_Base_Look;
+        private readonly InputAction m_Base_MouseX;
+        private readonly InputAction m_Base_MouseY;
         public struct BaseActions
         {
             private @FPPlayerControls m_Wrapper;
@@ -591,6 +635,8 @@ namespace Soul
             public InputAction @Alternative => m_Wrapper.m_Base_Alternative;
             public InputAction @Reload => m_Wrapper.m_Base_Reload;
             public InputAction @Look => m_Wrapper.m_Base_Look;
+            public InputAction @MouseX => m_Wrapper.m_Base_MouseX;
+            public InputAction @MouseY => m_Wrapper.m_Base_MouseY;
             public InputActionMap Get() { return m_Wrapper.m_Base; }
             public void Enable() { Get().Enable(); }
             public void Disable() { Get().Disable(); }
@@ -645,6 +691,12 @@ namespace Soul
                 @Look.started += instance.OnLook;
                 @Look.performed += instance.OnLook;
                 @Look.canceled += instance.OnLook;
+                @MouseX.started += instance.OnMouseX;
+                @MouseX.performed += instance.OnMouseX;
+                @MouseX.canceled += instance.OnMouseX;
+                @MouseY.started += instance.OnMouseY;
+                @MouseY.performed += instance.OnMouseY;
+                @MouseY.canceled += instance.OnMouseY;
             }
 
             private void UnregisterCallbacks(IBaseActions instance)
@@ -694,6 +746,12 @@ namespace Soul
                 @Look.started -= instance.OnLook;
                 @Look.performed -= instance.OnLook;
                 @Look.canceled -= instance.OnLook;
+                @MouseX.started -= instance.OnMouseX;
+                @MouseX.performed -= instance.OnMouseX;
+                @MouseX.canceled -= instance.OnMouseX;
+                @MouseY.started -= instance.OnMouseY;
+                @MouseY.performed -= instance.OnMouseY;
+                @MouseY.canceled -= instance.OnMouseY;
             }
 
             public void RemoveCallbacks(IBaseActions instance)
@@ -728,6 +786,8 @@ namespace Soul
             void OnAlternative(InputAction.CallbackContext context);
             void OnReload(InputAction.CallbackContext context);
             void OnLook(InputAction.CallbackContext context);
+            void OnMouseX(InputAction.CallbackContext context);
+            void OnMouseY(InputAction.CallbackContext context);
         }
     }
 }
