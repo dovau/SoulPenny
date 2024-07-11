@@ -20,10 +20,13 @@ namespace Soul
         public float maxPitch = 80.0f;
 
         private FPPlayerCharacter _character;
+        private MovementStateMachine _movement;
+
 
         private void Awake()
         {
             _character = GetComponent<FPPlayerCharacter>();
+            _movement = GetComponent<MovementStateMachine>();
             if (_character != null)
             {
                 Debug.Log("Character found");
@@ -59,26 +62,24 @@ namespace Soul
         }
         public void OnMouseX(InputAction.CallbackContext context)
         {
-            lookInput.x = context.ReadValue<float>();
+
+            lookInput.x = context.ReadValue<float>() * mouseSensitivity.x;
+            //lookInput.x *= mouseSensitivity.x;
+
+            _character.AddControlYawInput(lookInput.x);
 
         }
 
         public void OnMouseY(InputAction.CallbackContext context)
         {
-            lookInput.y = context.ReadValue<float>();
+
+            lookInput.y = context.ReadValue<float>()*mouseSensitivity.y;
+            //lookInput.y *= mouseSensitivity.y;
+
+            _character.AddControlPitchInput(invertLook ? -lookInput.y : lookInput.y);
         }
         private void Update()
         {
-            //Vector2 lookInput = new Vector2
-            //{
-            //    x = Input.GetAxisRaw("Mouse X"),
-            //    y = Input.GetAxisRaw("Mouse Y")
-            //};
-
-            lookInput *= mouseSensitivity;
-
-            _character.AddControlYawInput(lookInput.x);
-            _character.AddControlPitchInput(invertLook ? -lookInput.y : lookInput.y);
 
         }
     }

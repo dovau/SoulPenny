@@ -53,15 +53,6 @@ namespace Soul
                     ""id"": ""1cd13e69-272a-40bf-a30a-981e38908605"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
-                    ""interactions"": ""Press(pressPoint=0.3),Hold(duration=0.4,pressPoint=0.05)"",
-                    ""initialStateCheck"": false
-                },
-                {
-                    ""name"": ""Vault"",
-                    ""type"": ""Button"",
-                    ""id"": ""7e40bfab-767f-4613-80a7-c78c87896089"",
-                    ""expectedControlType"": ""Button"",
-                    ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
                 },
@@ -156,15 +147,6 @@ namespace Soul
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""Look"",
-                    ""type"": ""Value"",
-                    ""id"": ""82e6ee0c-8729-45a5-b4b4-d87bc3dcc3e3"",
-                    ""expectedControlType"": ""Vector2"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": true
-                },
-                {
                     ""name"": ""MouseX"",
                     ""type"": ""PassThrough"",
                     ""id"": ""9185f039-cc55-430d-a19e-cad0ee135fd5"",
@@ -187,7 +169,7 @@ namespace Soul
                 {
                     ""name"": ""WASD"",
                     ""id"": ""c875c90d-0560-4ffa-88f6-58d2c4443f1a"",
-                    ""path"": ""2DVector(mode=2)"",
+                    ""path"": ""2DVector"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -339,39 +321,6 @@ namespace Soul
                     ""isPartOfComposite"": false
                 },
                 {
-                    ""name"": ""One Modifier"",
-                    ""id"": ""15fb1ba9-1388-4339-8af1-c263308ffd32"",
-                    ""path"": ""OneModifier"",
-                    ""interactions"": ""Hold"",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Vault"",
-                    ""isComposite"": true,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": ""modifier"",
-                    ""id"": ""e907ba2e-a18c-45f7-8289-8e8a088554b3"",
-                    ""path"": ""<Keyboard>/leftShift"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Vault"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""binding"",
-                    ""id"": ""6e7bc5a0-c988-4b6a-a360-d7fc10a5c7ed"",
-                    ""path"": ""<Keyboard>/space"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Vault"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
                     ""name"": """",
                     ""id"": ""53aeeb6e-70da-4021-a568-0fecaa10f79c"",
                     ""path"": ""<Keyboard>/c"",
@@ -483,17 +432,6 @@ namespace Soul
                 },
                 {
                     ""name"": """",
-                    ""id"": ""88ab5cdf-b803-4a2d-98dd-e75d1f015f97"",
-                    ""path"": ""<Mouse>/delta"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Look"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
                     ""id"": ""8945e157-9518-4c32-804e-6fc9185d42f9"",
                     ""path"": ""<Mouse>/delta/x"",
                     ""interactions"": """",
@@ -524,7 +462,6 @@ namespace Soul
             m_Base_Move = m_Base.FindAction("Move", throwIfNotFound: true);
             m_Base_Crouch = m_Base.FindAction("Crouch", throwIfNotFound: true);
             m_Base_Jump = m_Base.FindAction("Jump", throwIfNotFound: true);
-            m_Base_Vault = m_Base.FindAction("Vault", throwIfNotFound: true);
             m_Base_Sprint = m_Base.FindAction("Sprint", throwIfNotFound: true);
             m_Base_Primary = m_Base.FindAction("Primary", throwIfNotFound: true);
             m_Base_Secondary = m_Base.FindAction("Secondary", throwIfNotFound: true);
@@ -535,7 +472,6 @@ namespace Soul
             m_Base_Holster = m_Base.FindAction("Holster", throwIfNotFound: true);
             m_Base_Alternative = m_Base.FindAction("Alternative", throwIfNotFound: true);
             m_Base_Reload = m_Base.FindAction("Reload", throwIfNotFound: true);
-            m_Base_Look = m_Base.FindAction("Look", throwIfNotFound: true);
             m_Base_MouseX = m_Base.FindAction("MouseX", throwIfNotFound: true);
             m_Base_MouseY = m_Base.FindAction("MouseY", throwIfNotFound: true);
         }
@@ -602,7 +538,6 @@ namespace Soul
         private readonly InputAction m_Base_Move;
         private readonly InputAction m_Base_Crouch;
         private readonly InputAction m_Base_Jump;
-        private readonly InputAction m_Base_Vault;
         private readonly InputAction m_Base_Sprint;
         private readonly InputAction m_Base_Primary;
         private readonly InputAction m_Base_Secondary;
@@ -613,7 +548,6 @@ namespace Soul
         private readonly InputAction m_Base_Holster;
         private readonly InputAction m_Base_Alternative;
         private readonly InputAction m_Base_Reload;
-        private readonly InputAction m_Base_Look;
         private readonly InputAction m_Base_MouseX;
         private readonly InputAction m_Base_MouseY;
         public struct BaseActions
@@ -623,7 +557,6 @@ namespace Soul
             public InputAction @Move => m_Wrapper.m_Base_Move;
             public InputAction @Crouch => m_Wrapper.m_Base_Crouch;
             public InputAction @Jump => m_Wrapper.m_Base_Jump;
-            public InputAction @Vault => m_Wrapper.m_Base_Vault;
             public InputAction @Sprint => m_Wrapper.m_Base_Sprint;
             public InputAction @Primary => m_Wrapper.m_Base_Primary;
             public InputAction @Secondary => m_Wrapper.m_Base_Secondary;
@@ -634,7 +567,6 @@ namespace Soul
             public InputAction @Holster => m_Wrapper.m_Base_Holster;
             public InputAction @Alternative => m_Wrapper.m_Base_Alternative;
             public InputAction @Reload => m_Wrapper.m_Base_Reload;
-            public InputAction @Look => m_Wrapper.m_Base_Look;
             public InputAction @MouseX => m_Wrapper.m_Base_MouseX;
             public InputAction @MouseY => m_Wrapper.m_Base_MouseY;
             public InputActionMap Get() { return m_Wrapper.m_Base; }
@@ -655,9 +587,6 @@ namespace Soul
                 @Jump.started += instance.OnJump;
                 @Jump.performed += instance.OnJump;
                 @Jump.canceled += instance.OnJump;
-                @Vault.started += instance.OnVault;
-                @Vault.performed += instance.OnVault;
-                @Vault.canceled += instance.OnVault;
                 @Sprint.started += instance.OnSprint;
                 @Sprint.performed += instance.OnSprint;
                 @Sprint.canceled += instance.OnSprint;
@@ -688,9 +617,6 @@ namespace Soul
                 @Reload.started += instance.OnReload;
                 @Reload.performed += instance.OnReload;
                 @Reload.canceled += instance.OnReload;
-                @Look.started += instance.OnLook;
-                @Look.performed += instance.OnLook;
-                @Look.canceled += instance.OnLook;
                 @MouseX.started += instance.OnMouseX;
                 @MouseX.performed += instance.OnMouseX;
                 @MouseX.canceled += instance.OnMouseX;
@@ -710,9 +636,6 @@ namespace Soul
                 @Jump.started -= instance.OnJump;
                 @Jump.performed -= instance.OnJump;
                 @Jump.canceled -= instance.OnJump;
-                @Vault.started -= instance.OnVault;
-                @Vault.performed -= instance.OnVault;
-                @Vault.canceled -= instance.OnVault;
                 @Sprint.started -= instance.OnSprint;
                 @Sprint.performed -= instance.OnSprint;
                 @Sprint.canceled -= instance.OnSprint;
@@ -743,9 +666,6 @@ namespace Soul
                 @Reload.started -= instance.OnReload;
                 @Reload.performed -= instance.OnReload;
                 @Reload.canceled -= instance.OnReload;
-                @Look.started -= instance.OnLook;
-                @Look.performed -= instance.OnLook;
-                @Look.canceled -= instance.OnLook;
                 @MouseX.started -= instance.OnMouseX;
                 @MouseX.performed -= instance.OnMouseX;
                 @MouseX.canceled -= instance.OnMouseX;
@@ -774,7 +694,6 @@ namespace Soul
             void OnMove(InputAction.CallbackContext context);
             void OnCrouch(InputAction.CallbackContext context);
             void OnJump(InputAction.CallbackContext context);
-            void OnVault(InputAction.CallbackContext context);
             void OnSprint(InputAction.CallbackContext context);
             void OnPrimary(InputAction.CallbackContext context);
             void OnSecondary(InputAction.CallbackContext context);
@@ -785,7 +704,6 @@ namespace Soul
             void OnHolster(InputAction.CallbackContext context);
             void OnAlternative(InputAction.CallbackContext context);
             void OnReload(InputAction.CallbackContext context);
-            void OnLook(InputAction.CallbackContext context);
             void OnMouseX(InputAction.CallbackContext context);
             void OnMouseY(InputAction.CallbackContext context);
         }

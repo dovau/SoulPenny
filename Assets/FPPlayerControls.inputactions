@@ -29,15 +29,6 @@
                     "id": "1cd13e69-272a-40bf-a30a-981e38908605",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": "Press(pressPoint=0.3),Hold(duration=0.4,pressPoint=0.05)",
-                    "initialStateCheck": false
-                },
-                {
-                    "name": "Vault",
-                    "type": "Button",
-                    "id": "7e40bfab-767f-4613-80a7-c78c87896089",
-                    "expectedControlType": "Button",
-                    "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
                 },
@@ -132,15 +123,6 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Look",
-                    "type": "Value",
-                    "id": "82e6ee0c-8729-45a5-b4b4-d87bc3dcc3e3",
-                    "expectedControlType": "Vector2",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": true
-                },
-                {
                     "name": "MouseX",
                     "type": "PassThrough",
                     "id": "9185f039-cc55-430d-a19e-cad0ee135fd5",
@@ -163,7 +145,7 @@
                 {
                     "name": "WASD",
                     "id": "c875c90d-0560-4ffa-88f6-58d2c4443f1a",
-                    "path": "2DVector(mode=2)",
+                    "path": "2DVector",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -315,39 +297,6 @@
                     "isPartOfComposite": false
                 },
                 {
-                    "name": "One Modifier",
-                    "id": "15fb1ba9-1388-4339-8af1-c263308ffd32",
-                    "path": "OneModifier",
-                    "interactions": "Hold",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Vault",
-                    "isComposite": true,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "modifier",
-                    "id": "e907ba2e-a18c-45f7-8289-8e8a088554b3",
-                    "path": "<Keyboard>/leftShift",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Vault",
-                    "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
-                    "name": "binding",
-                    "id": "6e7bc5a0-c988-4b6a-a360-d7fc10a5c7ed",
-                    "path": "<Keyboard>/space",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Vault",
-                    "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
                     "name": "",
                     "id": "53aeeb6e-70da-4021-a568-0fecaa10f79c",
                     "path": "<Keyboard>/c",
@@ -454,17 +403,6 @@
                     "processors": "",
                     "groups": "",
                     "action": "Sprint",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "88ab5cdf-b803-4a2d-98dd-e75d1f015f97",
-                    "path": "<Mouse>/delta",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Look",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
