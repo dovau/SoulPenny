@@ -2585,6 +2585,7 @@ namespace ECM2
             jumpInputHoldTime = 0.0f;
             
             ResetJumpState();
+            Debug.Log("Stopped Jumping"); //z999 remove this after use doga
         }
         
         /// <summary>

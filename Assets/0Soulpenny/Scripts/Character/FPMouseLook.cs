@@ -35,7 +35,6 @@ namespace Soul
             {
                 Debug.Log("FPPlayerCharacter not found");
             }
-
         }
 
         private void Start()

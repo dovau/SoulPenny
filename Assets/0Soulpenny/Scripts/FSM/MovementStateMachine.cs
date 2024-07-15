@@ -12,8 +12,6 @@ namespace Soul
     public class MovementStateMachine : StateMachine
     {
 
-
-
         private FPPlayerCharacter _character;
         private FPPlayerControls controls;
         private InputAction movement;
@@ -121,17 +119,12 @@ namespace Soul
         protected override void Update()
         {
             base.Update();
-            CheckForIdleState();
+            //CheckForIdleState();
             Debug.Log($"Current State: {currentState}");
             UpdateMovementDirection();
 
             HandleGroundCheck();
 
-            //Debug.Log("Move Input = " + moveInput);
-
-            //HandleMouseLook();
-            //HandleCrouch();
-            //HandleJump();
         }
 
 
@@ -142,7 +135,8 @@ namespace Soul
             movement.canceled += HandleMovementInput; 
 
             jump.started += HandleJumpInput;
-            
+            jump.performed += HandleJumpInput;
+            jump.canceled += HandleJumpInput;
 
             crouch.performed += HandleCrouchInput;
             sprint.performed += HandleSprintInput;
@@ -170,124 +164,22 @@ namespace Soul
             sprint.Disable();
         }
 
-
-
-        //Binding and subscribing on Start cause the nulls I'm getting might be that
-        //OnEnable is too early for it. I'll check script execution order and learn about it
-        ////but for now it's gonna be done on start
-        //private void OnEnable()
-        //{
-        //    BindInputActions();
-
-        //    SubscribeToInputEvents();
-        //}
-
         private void OnDestroy()
         {
             UnSubscribeFromInputEvents();
         }
-        //public void HandleMovementInput(InputAction.CallbackContext context)
-        //{
-        //    //moveInput = context.ReadValue<Vector2>();
 
-        //    moveInput.x=context.ReadValue<Vector2>().x;
-        //    moveInput.y=context.ReadValue<Vector2>().y;
-
-        //    Debug.Log(moveInput);
-        //    Vector3 movementDirection = Vector3.zero;
-
-        //    //// one way to do it
-        //    //movementDirection += _character.GetRightVector() * moveInput.x;
-        //    //movementDirection += _character.GetForwardVector() * moveInput.y;
-
-        //    // Another way I saw in ECM2 documentation
-
-        //    movementDirection += Vector3.right * moveInput.x;
-        //    movementDirection += Vector3.forward * moveInput.y;
-
-        //    if (_character.camera)
-        //    {
-        //        movementDirection
-        //            = movementDirection.relativeTo(_character.cameraTransform);
-        //    }
-
-        //    // Set character's movement direction vector
-
-        //    _character.SetMovementDirection(movementDirection);
-        //    Debug.Log("CharacterMovementDirection = " + movementDirection);
-            
-        //    // Also try moveinput.normalized or moveinput.normalized.sqrMagnitude
-        //    //Or actually learn what sqrMagnitude is properly 
-        //    if (moveInput.sqrMagnitude > 0.1f)
-
-        //    {
-        //        TransitionToState(walkingState);
-        //    }
-        //    else
-        //    {
-        //        TransitionToState(standingState);
-        //    }
-        //}
-
-
-
-        //public void HandleMovementInput()
-        //{
-
-
-        //    Vector2 moveInput = new Vector2()
-        //    {
-        //        x = Input.GetAxisRaw("Horizontal"),
-        //        y = Input.GetAxisRaw("Vertical")
-        //    };
-
-        //    Vector3 movementDirection = Vector3.zero;
-
-        //    movementDirection += _character.GetRightVector() * moveInput.x;
-        //    movementDirection += _character.GetForwardVector() * moveInput.y;
-
-        //    _character.SetMovementDirection(movementDirection);
-        //    //TransitionToState(walkingState);
-
-
-        //    if (moveInput.sqrMagnitude > 0.1f)
-        //    {
-        //        TransitionToState(walkingState);
-        //    }
-        //    else
-        //    {
-        //        TransitionToState(standingState);
-        //    }
-
-        //}
-        //public void HandleMovementInput()
-        //{
-        //    // Movement input, relative to character's view direction
-
-        //    Vector2 inputMove = new Vector2()
-        //    {
-        //        x = Input.GetAxisRaw("Horizontal"),
-        //        y = Input.GetAxisRaw("Vertical")
-        //    };
-
-        //    Vector3 movementDirection = Vector3.zero;
-
-        //    movementDirection += _character.GetRightVector() * inputMove.x;
-        //    movementDirection += _character.GetForwardVector() * inputMove.y;
-
-        //    _character.SetMovementDirection(movementDirection);
-        //}
 
         public void HandleMovementInput(InputAction.CallbackContext context)
         {
             moveInput = context.ReadValue<Vector2>();
 
-            if (moveInput.sqrMagnitude > 0)
+            if (moveInput.sqrMagnitude > 0 && _character.IsGrounded() ) 
             {
                 TransitionToState(walkingState);
 
             }
-            else 
+            else if (moveInput.sqrMagnitude == 0 && _character.IsGrounded() )
             {
                 TransitionToState(standingState); 
             
@@ -308,36 +200,31 @@ namespace Soul
             _character.Crouch();
         }
 
-        //private void HandleJumpInput()
-        //{
-        //    _character.Jump();
-        //    //if (jumpAction.triggered)
-        //    //{
-        //    //    _character.Jump();
-        //    //}
-        //    //else if (_character.IsGrounded())
-        //    //{
-        //    //    _character.StopJumping();
-        //    //}
-        //}
         private void HandleJumpInput(InputAction.CallbackContext context)
         {
+            if(context.canceled) return;
+            if(context.started)
+            {
+                Debug.Log("CTX Started Jumping");
+                _character.Jump();
+                TransitionToState(jumpingState);
+            }
+            else if(context.performed)
+            {
+                Debug.Log("CTX Jump Performed");
+                _character.StopJumping();
+            }
 
-            _character.Jump();
-            TransitionToState(jumpingState);
-
-         
         }
 
         private void HandleGroundCheck()
         {
             if (currentState == jumpingState && _character.IsGrounded())
             {
-
+                //_character.StopJumping();
                 TransitionToState(standingState);
                 Debug.Log("Character is grounded: " + _character.IsGrounded());
             }
-
         }
         private void HandleSprintInput(InputAction.CallbackContext context)
         {
@@ -345,15 +232,19 @@ namespace Soul
 
             // Implement sprint logic here
         }
-        private void CheckForIdleState()
-        {
-            Vector2 inputMove = movement.ReadValue<Vector2>();
+        //private void CheckForIdleState()
+        //{
+        //    if(currentState == jumpingState && _character.IsGrounded() )
+        //    {
+        //        Debug.Log("I'm grounded");
+        //    }
+        //    Vector2 inputMove = movement.ReadValue<Vector2>();
 
-            if (inputMove.sqrMagnitude == 0 && currentState != standingState)
-            {
-                TransitionToState(standingState);
-            }
-        }
+        //    if (inputMove.sqrMagnitude == 0 && currentState != standingState)
+        //    {
+        //        TransitionToState(standingState);
+        //    }
+        //}
     }
 
 }

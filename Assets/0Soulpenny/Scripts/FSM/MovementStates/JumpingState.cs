@@ -28,9 +28,6 @@ namespace Soul
         }
         public override IState GetNextState()
         {
-            //
-            //
-
             return null;
         }
     }

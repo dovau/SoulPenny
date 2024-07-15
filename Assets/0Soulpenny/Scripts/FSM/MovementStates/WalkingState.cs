@@ -11,6 +11,7 @@ namespace Soul
         public WalkingState(StateMachine stateMachine, FPPlayerCharacter character) : base(stateMachine) { }
         public override void Enter()
         {
+
         }
         public override void Exit()
         {

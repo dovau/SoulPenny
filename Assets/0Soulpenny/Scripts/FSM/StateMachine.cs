@@ -23,7 +23,11 @@ namespace Soul
             if (currentState == null) { return; }
 
             IState nextState = currentState.GetNextState();
-            if (!isTransitioningState && nextState != currentState)
+            //if (!isTransitioningState && nextState != currentState)
+            //{
+            //    TransitionToState(nextState);
+            //}
+            if ( nextState != currentState)
             {
                 TransitionToState(nextState);
             }
@@ -37,11 +41,11 @@ namespace Soul
                 return;
             }
 
-            isTransitioningState = true;
+            //isTransitioningState = true;
             currentState.Exit();
             currentState = nextState;
             currentState.Enter();
-            isTransitioningState= false;
+            //isTransitioningState= false;
         }
 
     }
