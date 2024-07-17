@@ -129,7 +129,7 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 0}
+    m_TransformParent: {fileID: 143656669}
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 9668d01fc975f8f4d8c76976d255455c,
         type: 3}
@@ -154,17 +154,17 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: 9668d01fc975f8f4d8c76976d255455c,
         type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 9668d01fc975f8f4d8c76976d255455c,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 9668d01fc975f8f4d8c76976d255455c,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 9668d01fc975f8f4d8c76976d255455c,
         type: 3}
@@ -185,6 +185,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: AnimeFBase-DC46
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 9668d01fc975f8f4d8c76976d255455c,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -891,6 +896,7 @@ Transform:
   - {fileID: 666554257}
   - {fileID: 69066957}
   - {fileID: 2400200026701196683}
+  - {fileID: 1483641050}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &144687700
@@ -4882,6 +4888,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 960738050}
+  - component: {fileID: 960738051}
+  - component: {fileID: 960738052}
+  - component: {fileID: 960738053}
   m_Layer: 0
   m_Name: Brain
   m_TagString: Untagged
@@ -4904,6 +4913,43 @@ Transform:
   m_Children: []
   m_Father: {fileID: 2400200027932216847}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &960738051
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 960738049}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7ffe175c49e3a644c81cebeab081c001, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  interactSM: {fileID: 0}
+--- !u!114 &960738052
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 960738049}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6c4aabc71b7d0e74f8d59eed188db70e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &960738053
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 960738049}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3d017d7faeb1d734486f6fb96df5e68d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &999404793 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5513258070660719699, guid: f016d3233143df64d92e06b16eec7e6d,
@@ -6385,6 +6431,12 @@ MonoBehaviour:
   - m_Rig: {fileID: 0}
     m_Active: 1
   m_Effectors: []
+--- !u!4 &1483641050 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 9668d01fc975f8f4d8c76976d255455c,
+    type: 3}
+  m_PrefabInstance: {fileID: 13377561}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &1520123336 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8280311484274731722, guid: 8cc7c6833f73fa04f959d62bf0e5fb06,
@@ -11453,7 +11505,6 @@ GameObject:
   - component: {fileID: 7253068284801469492}
   - component: {fileID: 7253068284801469491}
   - component: {fileID: 7253068284801469494}
-  - component: {fileID: 7253068284801469496}
   - component: {fileID: 7253068284801469495}
   m_Layer: 0
   m_Name: FPCharacterECMExample (1)
@@ -14127,18 +14178,6 @@ MonoBehaviour:
   mouseSensitivity: {x: 0.04, y: 0.04}
   minPitch: -80
   maxPitch: 80
---- !u!114 &7253068284801469496
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3982938643158884024}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6c4aabc71b7d0e74f8d59eed188db70e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &7253068285160091575
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15556,7 +15595,6 @@ SceneRoots:
   - {fileID: 832575519}
   - {fileID: 800013408}
   - {fileID: 738469801}
-  - {fileID: 13377561}
   - {fileID: 2400200027932216847}
   - {fileID: 143656669}
   - {fileID: 501162330}

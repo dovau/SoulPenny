@@ -8,6 +8,7 @@ namespace Soul
     public abstract class StateMachine: MonoBehaviour
     {
         protected IState currentState;
+        public IState CurrentState { get { return currentState; } }
         protected bool isTransitioningState = false;
 
         protected virtual void Start()
@@ -16,6 +17,7 @@ namespace Soul
             {
                 currentState.Enter();
             }
+
         }
 
         protected virtual void Update()

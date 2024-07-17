@@ -32,7 +32,7 @@ namespace Soul
         {
             this.stateMachine = stateMachine;
             //transitions = new List<Transition>();
-            //transitions.Add(new Transition { TargetState = this, Condition = () => { return true; } }); //z999 idea on how to handle transitions
+            //transitions.Add(new Transition {TargetState = this, Condition = () => { return true; } }); //z999 idea on how to handle transitions
         }
 
         public abstract void Enter();

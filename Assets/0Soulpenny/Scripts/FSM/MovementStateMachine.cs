@@ -2,6 +2,7 @@ using ECM2;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -10,10 +11,11 @@ using UnityEngine.InputSystem;
 namespace Soul
 {
     public class MovementStateMachine : StateMachine
-    {
+    {   
+        //private FPPlayerCharacter _character;
+        //private FPPlayerControls controls;
+        private FPPlayerBrain brain;
 
-        private FPPlayerCharacter _character;
-        private FPPlayerControls controls;
         private InputAction movement;
         private InputAction jump;
         private InputAction crouch;
@@ -50,16 +52,14 @@ namespace Soul
         private void Awake()
         {
             Debug.Log("MovementStateMachine Awake");
-            GetCharacter();
-            
+            brain = GetComponent<FPPlayerBrain>();
 
         }
 
         protected override void Start()
         {
             base.Start();
-
-            BindControls();
+            
 
             BindInputActions();
             
@@ -71,38 +71,16 @@ namespace Soul
             currentState = standingState; // Set initial state
             currentState.Enter();
         }
-        private void GetCharacter()
-        {
-            _character = GetComponent<FPPlayerCharacter>();
 
-            if (_character == null)
-            {
-                Debug.LogError("FPPlayerCharacter component missing!");
-                this.enabled = false;
-                return;
 
-            }
-        }
-        private void BindControls()
-        {
-            controls = new FPPlayerControls();
-
-            if (controls == null)
-            {
-                Debug.LogError("FPPlayerControls is null!");
-                this.enabled = false;
-                return;
-            }
-            controls.Base.Enable();
-        }
  
         private void BindInputActions()
         {
             Debug.Log("Binding Input Actions");
-            movement = controls.Base.Move;
-            jump = controls.Base.Jump;
-            crouch = controls.Base.Crouch;
-            sprint = controls.Base.Sprint;
+            movement = brain.Controls.Base.Move;
+            jump = brain.Controls.Base.Jump;
+            crouch = brain.Controls.Base.Crouch;
+            sprint = brain.Controls.Base.Sprint;
 
         }
 
@@ -110,9 +88,9 @@ namespace Soul
         private void InitializeStates()
         {
             Debug.Log("Initializing States");
-            standingState = new StandingState(this, _character);
-            walkingState = new WalkingState(this, _character);
-            jumpingState = new JumpingState(this, _character);
+            standingState = new StandingState(this, brain.Character);
+            walkingState = new WalkingState(this, brain.Character);
+            jumpingState = new JumpingState(this, brain.Character);
             // Initialize other states similarly...
         }
 
@@ -174,12 +152,12 @@ namespace Soul
         {
             moveInput = context.ReadValue<Vector2>();
 
-            if (moveInput.sqrMagnitude > 0 && _character.IsGrounded() ) 
+            if (moveInput.sqrMagnitude > 0 && brain.Character.IsGrounded() ) 
             {
                 TransitionToState(walkingState);
 
             }
-            else if (moveInput.sqrMagnitude == 0 && _character.IsGrounded() )
+            else if (moveInput.sqrMagnitude == 0 && brain.Character.IsGrounded() )
             {
                 TransitionToState(standingState); 
             
@@ -189,15 +167,15 @@ namespace Soul
         private void UpdateMovementDirection()
         {
             Vector3 movementDirection = Vector3.zero;
-            movementDirection += _character.GetRightVector() * moveInput.x;
-            movementDirection += _character.GetForwardVector() * moveInput.y;
-            _character.SetMovementDirection(movementDirection);
+            movementDirection += brain.Character.GetRightVector() * moveInput.x;
+            movementDirection += brain.Character.GetForwardVector() * moveInput.y;
+            brain.Character.SetMovementDirection(movementDirection);
             //Debug.Log("Movement Direction: " + movementDirection);
         }
 
         private void HandleCrouchInput(InputAction.CallbackContext context)
         {
-            _character.Crouch();
+            brain.Character.Crouch();
         }
 
         private void HandleJumpInput(InputAction.CallbackContext context)
@@ -206,24 +184,24 @@ namespace Soul
             if(context.started)
             {
                 Debug.Log("CTX Started Jumping");
-                _character.Jump();
+                brain.Character.Jump();
                 TransitionToState(jumpingState);
             }
             else if(context.performed)
             {
                 Debug.Log("CTX Jump Performed");
-                _character.StopJumping();
+                brain.Character.StopJumping();
             }
 
         }
 
         private void HandleGroundCheck()
         {
-            if (currentState == jumpingState && _character.IsGrounded())
+            if (currentState == jumpingState && brain.Character.IsGrounded())
             {
                 //_character.StopJumping();
                 TransitionToState(standingState);
-                Debug.Log("Character is grounded: " + _character.IsGrounded());
+                Debug.Log("Character is grounded: " + brain.Character.IsGrounded());
             }
         }
         private void HandleSprintInput(InputAction.CallbackContext context)
