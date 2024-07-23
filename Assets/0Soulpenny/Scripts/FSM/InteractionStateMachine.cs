@@ -10,14 +10,14 @@ namespace Soul
 	{
         private FPPlayerBrain brain;
 
-        private InputAction primaryAction;
-        private InputAction secondaryAction;
-        private InputAction interactAction;
-        private InputAction dropAction;
-        private InputAction throwAction;
-        private InputAction switchAction;
-        private InputAction holsterAction;
-        private InputAction alternativeAction;
+        //private InputAction primaryAction;
+        //private InputAction secondaryAction;
+        //public InputAction interactAction;
+        //private InputAction dropAction;
+        //private InputAction throwAction;
+        //private InputAction switchAction;
+        //private InputAction holsterAction;
+        //private InputAction alternativeAction;
 
         public enum InteractionStates
         {
@@ -56,7 +56,7 @@ namespace Soul
         {
             base.Start();
 
-            BindInputActions();
+            //BindInputActions(); // z999 carried over to FPPlayerBrain
 
             SubscribeToInputEvents();
 
@@ -77,13 +77,13 @@ namespace Soul
         {
             Debug.Log("Subscribing to Input Events!");
 
-            primaryAction.performed += HandlePrimaryAction;
-            secondaryAction.performed += HandleSecondaryAction;
-            interactAction.performed += HandleInteractAction;
+            brain.PrimaryAction.performed += HandlePrimaryAction;
+            brain.SecondaryAction.performed += HandleSecondaryAction;
+            brain.InteractAction.performed += HandleInteractAction;
             
-            primaryAction.Enable();
-            secondaryAction.Enable();
-            interactAction.Enable();
+            brain.PrimaryAction.Enable();
+            brain.SecondaryAction.Enable();
+            brain.InteractAction.Enable();
 
             Debug.Log("Subscribed to Input Events!");
 
@@ -91,30 +91,28 @@ namespace Soul
 
         private void UnSubscribeFromInputEvents()
         {
-            primaryAction.performed -= HandlePrimaryAction;
-            secondaryAction.performed -= HandleSecondaryAction;
-            interactAction.performed -= HandleInteractAction;
+            brain.PrimaryAction.performed -= HandlePrimaryAction;
+            brain.SecondaryAction.performed -= HandleSecondaryAction;
+            brain.InteractAction.performed -= HandleInteractAction;
 
-
-
-            primaryAction.Disable();
-            secondaryAction.Disable();
-            interactAction.Disable();
+            brain.PrimaryAction.Disable();
+            brain.SecondaryAction.Disable();
+            brain.InteractAction.Disable();
         }
-        private void BindInputActions()
-        {
-            Debug.Log("Binding Input Actions: Interactions");
-            primaryAction = brain.Controls.Base.Primary;
-            secondaryAction = brain.Controls.Base.Secondary;
-            interactAction = brain.Controls.Base.Interact;
-            dropAction = brain.Controls.Base.Drop;
-            throwAction = brain.Controls.Base.Throw;
-            switchAction = brain.Controls.Base.Switch;
-            holsterAction = brain.Controls.Base.Holster;
-            alternativeAction = brain.Controls.Base.Alternative;
-            Debug.Log("Input Actions Bound!");
+        //private void BindInputActions()
+        //{
+        //    Debug.Log("Binding Input Actions: Interactions");
+        //    primaryAction = brain.Controls.Base.Primary;
+        //    secondaryAction = brain.Controls.Base.Secondary;
+        //    interactAction = brain.Controls.Base.Interact;
+        //    dropAction = brain.Controls.Base.Drop;
+        //    throwAction = brain.Controls.Base.Throw;
+        //    switchAction = brain.Controls.Base.Switch;
+        //    holsterAction = brain.Controls.Base.Holster;
+        //    alternativeAction = brain.Controls.Base.Alternative;
+        //    Debug.Log("Input Actions Bound!");
 
-        }
+        //}
         private void OnDestroy()
         {
             UnSubscribeFromInputEvents();

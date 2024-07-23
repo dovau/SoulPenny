@@ -15,13 +15,15 @@ namespace Soul
         //private FPPlayerCharacter _character;
         //private FPPlayerControls controls;
         private FPPlayerBrain brain;
+        private FPPlayerAbilityManager abilityManager;
+        private FPPlayerMediator mediator;
 
-        private InputAction movement;
-        private InputAction jump;
-        private InputAction crouch;
-        private InputAction crawl;
-        private InputAction sprint;
-        private InputAction climb;
+            //private InputAction movement;
+            //private InputAction jump;
+            //private InputAction crouch;
+            //private InputAction crawl;
+            //private InputAction sprint;
+            //private InputAction climb;
         //...etc
 
         public enum MovementState
@@ -48,7 +50,8 @@ namespace Soul
         private IState jumpingState;
 
         Vector2 moveInput;
-
+        private bool canSprint;
+        public bool CanSprint => canSprint;
         private void Awake()
         {
             Debug.Log("MovementStateMachine Awake");
@@ -61,7 +64,7 @@ namespace Soul
             base.Start();
             
 
-            BindInputActions();
+            //BindInputActions();
             
             SubscribeToInputEvents();
 
@@ -70,20 +73,32 @@ namespace Soul
 
             currentState = standingState; // Set initial state
             currentState.Enter();
+
+            GetMediator();
+            GetAbilityManager();
         }
 
 
  
-        private void BindInputActions()
+        //private void BindInputActions()
+        //{
+        //    Debug.Log("Binding Input Actions");
+        //    movement = brain.Controls.Base.Move;
+        //    jump = brain.Controls.Base.Jump;
+        //    crouch = brain.Controls.Base.Crouch;
+        //    sprint = brain.Controls.Base.Sprint;
+
+        //}
+        private void GetMediator()
         {
-            Debug.Log("Binding Input Actions");
-            movement = brain.Controls.Base.Move;
-            jump = brain.Controls.Base.Jump;
-            crouch = brain.Controls.Base.Crouch;
-            sprint = brain.Controls.Base.Sprint;
-
+            mediator = brain.Mediator;
+            if(mediator != null ) { Debug.Log("MovementSM Found Mediator"); }
         }
-
+        private void GetAbilityManager()
+        {
+            abilityManager = mediator.AbilityManager;
+            if (abilityManager != null) { Debug.Log("MovementSM Found Ability Manager"); }
+        }
 
         private void InitializeStates()
         {
@@ -109,37 +124,43 @@ namespace Soul
         private void SubscribeToInputEvents() 
         {
             Debug.Log("Subscribing to Input Events");
-            movement.performed += HandleMovementInput;
-            movement.canceled += HandleMovementInput; 
+            brain.Movement.performed += HandleMovementInput;
+            brain.Movement.canceled += HandleMovementInput; 
 
-            jump.started += HandleJumpInput;
-            jump.performed += HandleJumpInput;
-            jump.canceled += HandleJumpInput;
+            brain.Jump.started += HandleJumpInput;
+            brain.Jump.performed += HandleJumpInput;
+            brain.Jump.canceled += HandleJumpInput;
 
-            crouch.performed += HandleCrouchInput;
-            sprint.performed += HandleSprintInput;
+            brain.Crouch.performed += HandleCrouchInput;
 
-            movement.Enable();
-            jump.Enable();
-            crouch.Enable();
-            sprint.Enable();
+            //sprint.started += HandleSprintInput;
+            brain.Sprint.performed += HandleSprintInput;
+            brain.Sprint.canceled += HandleSprintInput;
+
+            brain.Movement.Enable();
+            brain.Jump.Enable();
+            brain.Crouch.Enable();
+            brain.Sprint.Enable();
 
         }
         private void UnSubscribeFromInputEvents()
         {
             Debug.Log("Unsubscribing from Input Events");
-            movement.performed -= HandleMovementInput;
-            movement.canceled -= HandleMovementInput;
+            brain.Movement.performed -= HandleMovementInput;
+            brain.Movement.canceled -= HandleMovementInput;
 
-            jump.performed -= HandleJumpInput;
-            crouch.performed -= HandleCrouchInput;
-            sprint.performed -= HandleSprintInput;
+            brain.Jump.performed -= HandleJumpInput;
+            brain.Crouch.performed -= HandleCrouchInput;
+
+            //sprint.started -= HandleSprintInput;
+            brain.Sprint.performed -= HandleSprintInput;
+            brain.Sprint.canceled -= HandleSprintInput;
 
 
-            movement.Disable();
-            jump.Disable();
-            crouch.Disable();
-            sprint.Disable();
+            brain.Movement.Disable();
+            brain.Jump.Disable();
+            brain.Crouch.Disable();
+            brain.Sprint.Disable();
         }
 
         private void OnDestroy()
@@ -206,23 +227,64 @@ namespace Soul
         }
         private void HandleSprintInput(InputAction.CallbackContext context)
         {
-            Debug.Log("I'm sprinting!");
+            if (context.performed)
+            {
+                Debug.Log("Sprinting");
+                canSprint = true;
+                var sprintAbility = abilityManager?.GetAbility<CharacterSprint>();
+                if (sprintAbility != null)
+                {
+                    Debug.Log("Performed & Sprint ability successfully received from Ability Manager");
 
-            // Implement sprint logic here
+                    sprintAbility.Activate();
+                }
+                else
+                {
+                    Debug.LogError("CharacterSprint ability not found");
+                }
+
+            }
+
+            else if (context.canceled)
+            {
+                if (canSprint)
+                {
+
+                    Debug.Log("Not Sprinting");
+                    canSprint = false;
+                    var sprintAbility = abilityManager?.GetAbility<CharacterSprint>();
+                    if (sprintAbility != null)
+                    {
+                        Debug.Log("Canceling & Sprint ability successfully received from Ability Manager");
+
+                        sprintAbility.Deactivate();
+                    }
+                    else
+                    {
+                        Debug.LogError("CharacterSprint ability not found");
+                    }
+                }
+            }
+
+            //if (context.started)
+            //{
+            //    Debug.Log("Sprinting");
+            //    canSprint = true;
+            //    var sprintAbility = abilityManager?.GetAbility<CharacterSprint>();
+            //    if (sprintAbility != null)
+            //    {
+            //        Debug.Log("Starting & Sprint ability successfully received from Ability Manager");
+            //        sprintAbility.Activate();
+            //    }
+            //    else
+            //    {
+            //        Debug.LogError("CharacterSprint ability not found");
+            //    }
+            //}
+
+
+
         }
-        //private void CheckForIdleState()
-        //{
-        //    if(currentState == jumpingState && _character.IsGrounded() )
-        //    {
-        //        Debug.Log("I'm grounded");
-        //    }
-        //    Vector2 inputMove = movement.ReadValue<Vector2>();
-
-        //    if (inputMove.sqrMagnitude == 0 && currentState != standingState)
-        //    {
-        //        TransitionToState(standingState);
-        //    }
-        //}
     }
 
 }

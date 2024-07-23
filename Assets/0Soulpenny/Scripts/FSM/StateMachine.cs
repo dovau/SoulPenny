@@ -9,6 +9,8 @@ namespace Soul
     {
         protected IState currentState;
         public IState CurrentState { get { return currentState; } }
+
+
         protected bool isTransitioningState = false;
 
         protected virtual void Start()

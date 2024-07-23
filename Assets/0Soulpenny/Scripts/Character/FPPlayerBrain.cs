@@ -3,11 +3,15 @@ using System.Collections.Generic;
 using UnityEngine;
 using ECM2;
 using UnityEngine.InputSystem;
+using Animancer;
 
 namespace Soul
 {
-    public class FPPlayerBrain : MonoBehaviour
+    public class FPPlayerBrain : CharacterBrain
     {
+        private FPPlayerMediator _mediator;
+        public FPPlayerMediator Mediator => _mediator;
+
 
         private FPPlayerCharacter _character;
         public FPPlayerCharacter Character { get { return _character; } }
@@ -17,21 +21,74 @@ namespace Soul
 
 
         private MovementStateMachine movementSM;
-        public InteractionStateMachine interactSM;
-        //private SocialStateMachine socialSM;
+        public MovementStateMachine MovementSM => movementSM;
 
-        private void Awake()
+        private InteractionStateMachine interactSM;
+        public InteractionStateMachine InteractionSM => interactSM;
+
+        private SocialStateMachine socialSM;
+        public SocialStateMachine SocialSM => socialSM;
+
+        private AnimancerComponent animancerComponent;
+        public AnimancerComponent AnimancerComponent => animancerComponent;
+
+
+        private InputAction movement;
+        private InputAction jump;
+        private InputAction crouch;
+        private InputAction crawl;
+        private InputAction sprint;
+        private InputAction climb;
+
+        private InputAction primaryAction;
+        private InputAction secondaryAction;
+        private InputAction interactAction;
+        private InputAction dropAction;
+        private InputAction throwAction;
+        private InputAction switchAction;
+        private InputAction holsterAction;
+        private InputAction alternativeAction;
+
+
+        // Public accessors of InputActions
+
+        public InputAction Movement { get { return movement; } }
+        public InputAction Jump { get { return jump; } }
+        public InputAction Crouch { get { return crouch; } }
+        public InputAction Crawl { get { return crawl; } }
+        public InputAction Sprint { get { return sprint; } }
+        public InputAction Climb { get { return climb; } }
+
+
+        public InputAction PrimaryAction { get { return primaryAction; } }
+        public InputAction SecondaryAction { get { return secondaryAction; } }
+        public InputAction InteractAction { get { return interactAction; } }
+        public InputAction DropAction { get { return dropAction; } }
+        // etc testing centralizing input actions so other systems can just subscribe to Brain
+
+
+        protected override void Awake()
         {
-
-            GetCharacter();
+            base.Awake();
 
             GetStateMachines();
 
         }
+
+        public void SetMediator(FPPlayerMediator mediator)
+        {
+            this._mediator = mediator;
+        }
+        public void MediatorNotifyTest()
+        {
+            _mediator.Notify(this, "BrainThinkingHmm");
+
+        }
+
         private void GetCharacter()
         {
-            _character = GetComponentInParent<FPPlayerCharacter>();
-
+            //_character = GetComponentInParent<FPPlayerCharacter>();
+            _character = Mediator.Character;
             if (_character == null)
             {
                 Debug.LogError("FPPlayerCharacter component missing!");
@@ -53,21 +110,51 @@ namespace Soul
             {
                 Debug.Log("Interaction State Machine found");
             }
+            socialSM = GetComponent<SocialStateMachine>();
+            if (socialSM != null)
+            {
+                Debug.Log("Social State Machine found");
+            }
 
         }
 
-        private void Start()
+        protected override void Start()
         {
+            base.Start();
+            GetCharacter();
             BindControls();
+            BindInputActions();
+            MediatorNotifyTest();
+
+
+        }
+
+
+        private void BindInputActions()
+        {
+            Debug.Log("Binding Movement Input Actions");
+            movement = controls.Base.Move;
+            jump = controls.Base.Jump;
+            crouch = controls.Base.Crouch;
+            sprint = controls.Base.Sprint;
+            Debug.Log("Movement Actions Bound!");
+            Debug.Log("Binding Input Actions: Interactions");
+            primaryAction = controls.Base.Primary;
+            secondaryAction = controls.Base.Secondary;
+            interactAction = controls.Base.Interact;
+            dropAction = controls.Base.Drop;
+            throwAction = controls.Base.Throw;
+            switchAction = controls.Base.Switch;
+            holsterAction = controls.Base.Holster;
+            alternativeAction = controls.Base.Alternative;
+            Debug.Log("Interaction Actions Bound!");
 
         }
 
         private void BindControls()
         {
             controls = _character.Controls;
-            //possible weak link here check it cause 
-            //I'm trying to move logic to playerbrain AND change from
-            //controls=new FPPlayerControls to character.controls so...
+            //possible weak link here 
 
             if (controls == null)
             {
@@ -76,6 +163,15 @@ namespace Soul
                 return;
             }
             controls.Base.Enable();
+        }
+
+        protected override void Update()
+        {
+            base.Update();
+            if (Input.GetKeyDown(KeyCode.J)) 
+            {
+                MediatorNotifyTest();
+            }
         }
     }
 

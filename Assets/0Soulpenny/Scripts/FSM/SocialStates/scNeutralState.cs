@@ -5,10 +5,12 @@ using UnityEngine;
 
 namespace Soul
 {
-    public class WalkingState : BaseState
+    public class scNeutralState : BaseState
     {
         private FPPlayerCharacter character;
-        public WalkingState(StateMachine stateMachine, FPPlayerCharacter character) : base(stateMachine) { }
+        public scNeutralState(StateMachine stateMachine, FPPlayerCharacter character) : base(stateMachine) { }
+
+
         public override void Enter()
         {
 
@@ -19,18 +21,14 @@ namespace Soul
         }
         public override void Execute()
         {
-            //Animancer.Play("Walking")
-            Debug.Log("I'm walking.");
-        } 
+            Debug.Log("Feeling neutral.");
+        }
 
 
         public override IState GetNextState()
         {
             return null;
         }
-
-
     }
-
 
 }

@@ -14,13 +14,35 @@ namespace ECM2
 
         private float _cameraPitch;
 
+        private FPPlayerMediator _mediator;
+        public FPPlayerMediator Mediator => _mediator;
+
         protected override void Awake()
         {
             base.Awake();
 
             controls = new FPPlayerControls();
+
+
+        }
+        protected override void Start()
+        {
+            base.Start();
+
+            MediatorNotifyTest();
+
+
         }
 
+        public void SetMediator(FPPlayerMediator mediator)
+        {
+            this._mediator = mediator;
+        }
+        public void MediatorNotifyTest()
+        {
+            _mediator.Notify(this, "ActionPerformed");
+            
+        }
 
         public virtual void AddControlYawInput(float value)
         {
@@ -39,7 +61,15 @@ namespace ECM2
             cameraParent.transform.localRotation = Quaternion.Euler(_cameraPitch, 0.0f, 0.0f);
         }
 
-        protected virtual void LateUpdate()
+        protected void Update()
+        {
+            if (Input.GetKeyDown(KeyCode.K))
+            {
+                MediatorNotifyTest();
+            }
+        }
+
+        protected void LateUpdate()
         {
             UpdateCameraParentRotation();
         }
@@ -55,6 +85,7 @@ namespace ECM2
 
             SetRotationMode(RotationMode.None);
         }
+
     }
 
 }
