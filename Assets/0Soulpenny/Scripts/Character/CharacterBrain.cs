@@ -23,6 +23,11 @@ namespace Soul
         {
 
         }
+
+        protected virtual void OnEnable()
+        {
+
+        }
     }
 
 }

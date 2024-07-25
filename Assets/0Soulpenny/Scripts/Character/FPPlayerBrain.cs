@@ -4,6 +4,8 @@ using UnityEngine;
 using ECM2;
 using UnityEngine.InputSystem;
 using Animancer;
+using TMPro;
+using Unity.VisualScripting;
 
 namespace Soul
 {
@@ -29,8 +31,18 @@ namespace Soul
         private SocialStateMachine socialSM;
         public SocialStateMachine SocialSM => socialSM;
 
-        private AnimancerComponent animancerComponent;
-        public AnimancerComponent AnimancerComponent => animancerComponent;
+
+        // Setting up Animancer stuff here for now, I'll move them to the Animation Manager or sth later
+
+        [SerializeField]private AnimancerComponent animancer;
+        [HideInInspector]public AnimancerComponent Animancer => animancer;
+        //[SerializeField] private AnimationClip currentClip;
+        //[HideInInspector] public AnimationClip CurrentClip => currentClip;
+
+        [SerializeField] private AnimationClip idleClip;
+        [SerializeField] private AnimationClip walkingClip;
+        [SerializeField] private AnimationClip actionClip;
+
 
 
         private InputAction movement;
@@ -65,6 +77,9 @@ namespace Soul
         public InputAction InteractAction { get { return interactAction; } }
         public InputAction DropAction { get { return dropAction; } }
         // etc testing centralizing input actions so other systems can just subscribe to Brain
+
+
+
 
 
         protected override void Awake()
@@ -124,7 +139,9 @@ namespace Soul
             GetCharacter();
             BindControls();
             BindInputActions();
+            SubscribeToInputEventsTemp();
             MediatorNotifyTest();
+            animancer.Play(idleClip); 
 
 
         }
@@ -165,13 +182,65 @@ namespace Soul
             controls.Base.Enable();
         }
 
+        private void SubscribeToInputEventsTemp()
+        {
+            movement.performed += HandleWalkTemp;
+            movement.canceled += HandleIdleTemp;
+            interactAction.performed += PlayActionClipTemp;
+
+            movement.Enable();
+            interactAction.Enable();
+
+        }
         protected override void Update()
         {
             base.Update();
+
+            HandleAnimationTemp();
+
+
             if (Input.GetKeyDown(KeyCode.J)) 
             {
                 MediatorNotifyTest();
             }
+        }
+
+        private void PlayActionClipTemp(InputAction.CallbackContext context)
+        {
+            AnimancerState state = animancer.Play(actionClip);
+            state.Time = 0; // retrigger
+            state.Events.OnEnd = OnEnable;
+
+        }
+        protected void HandleIdleTemp(InputAction.CallbackContext context)
+        {
+            animancer.Play(idleClip);
+        }
+
+        protected void HandleWalkTemp(InputAction.CallbackContext context)
+        {
+            animancer.Play(walkingClip);
+        }
+
+        protected override void OnEnable()
+        {
+            base.OnEnable();
+            animancer.Play(idleClip);
+            Debug.Log("Action animation ended?");
+        }
+        protected void HandleAnimationTemp()
+        {
+            
+            //var currentState = MovementSM.CurrentState;
+
+            //if(currentState is StandingState)
+            //{
+            //    animancer.Play(idleClip);
+            //}
+            //else if(currentState is WalkingState) 
+            //{
+            //    animancer.Play(walkingClip);
+            //}
         }
     }
 

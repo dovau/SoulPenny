@@ -4990,6 +4990,55 @@ Transform:
   - {fileID: 185703524}
   m_Father: {fileID: 835215716}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &918290580
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 918290581}
+  - component: {fileID: 918290582}
+  m_Layer: 0
+  m_Name: Animation
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &918290581
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 918290580}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2400200027932216847}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &918290582
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 918290580}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e21b62190ae125b478ff6b7a128d605f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _Animancer: {fileID: 8886279169415503026}
+  idleClip: {fileID: 7400000, guid: 651f317d09f0c4f409d2d765567d49be, type: 3}
+  movingClip: {fileID: 7400000, guid: a8869cf4b03fd7b43948f6a4422cf92c, type: 3}
+  _Mediator: {fileID: 7253068284801469496}
+  _Brain: {fileID: 960738051}
 --- !u!1001 &954117854
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5116,6 +5165,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7ffe175c49e3a644c81cebeab081c001, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  animancer: {fileID: 8886279169415503026}
+  idleClip: {fileID: 7400000, guid: 651f317d09f0c4f409d2d765567d49be, type: 3}
+  walkingClip: {fileID: 7400000, guid: 790dcc5ad501c0b40b70c0b9e7e28950, type: 3}
+  actionClip: {fileID: 7400000, guid: 6b6754727a425b241bd179af348a5153, type: 2}
 --- !u!114 &960738052
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10810,6 +10863,7 @@ Transform:
   - {fileID: 960738050}
   - {fileID: 5138167151650974195}
   - {fileID: 496255769768398106}
+  - {fileID: 918290581}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &2449709045694295549
