@@ -17,7 +17,7 @@ namespace Soul
         //private InputAction throwAction;
         //private InputAction switchAction;
         //private InputAction holsterAction;
-        //private InputAction alternativeAction;
+        //private InputAction altModifier;
 
         public enum InteractionStates
         {
@@ -109,7 +109,7 @@ namespace Soul
         //    throwAction = brain.Controls.Base.Throw;
         //    switchAction = brain.Controls.Base.Switch;
         //    holsterAction = brain.Controls.Base.Holster;
-        //    alternativeAction = brain.Controls.Base.Alternative;
+        //    altModifier = brain.Controls.Base.Alternative;
         //    Debug.Log("Input Actions Bound!");
 
         //}

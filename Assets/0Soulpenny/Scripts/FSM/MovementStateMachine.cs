@@ -191,7 +191,7 @@ namespace Soul
             movementDirection += brain.Character.GetRightVector() * moveInput.x;
             movementDirection += brain.Character.GetForwardVector() * moveInput.y;
             brain.Character.SetMovementDirection(movementDirection);
-            //Debug.Log("Movement Direction: " + movementDirection);
+            Debug.Log("Movement Direction from MovementSM: " + movementDirection);
         }
 
         private void HandleCrouchInput(InputAction.CallbackContext context)

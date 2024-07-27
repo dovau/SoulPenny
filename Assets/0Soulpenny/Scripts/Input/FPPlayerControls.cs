@@ -163,6 +163,15 @@ namespace Soul
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""MouseScroll"",
+                    ""type"": ""Value"",
+                    ""id"": ""aa951f11-30da-42c5-b591-b25246419959"",
+                    ""expectedControlType"": ""Axis"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
                 }
             ],
             ""bindings"": [
@@ -355,6 +364,17 @@ namespace Soul
                 },
                 {
                     ""name"": """",
+                    ""id"": ""f9289b2d-54a9-4220-9a25-06d8227b87a1"",
+                    ""path"": ""<Mouse>/middleButton"",
+                    ""interactions"": ""Press(behavior=1)"",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Interact"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
                     ""id"": ""842f24d7-6368-4452-b573-91d90bc38fcf"",
                     ""path"": ""<Keyboard>/f"",
                     ""interactions"": """",
@@ -451,6 +471,39 @@ namespace Soul
                     ""action"": ""MouseY"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""1D Axis"",
+                    ""id"": ""c77dfcce-9490-4562-b044-9585437b6e3a"",
+                    ""path"": ""1DAxis"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""MouseScroll"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""positive"",
+                    ""id"": ""d0ea0e5d-9dc6-4cdd-9674-2b44e7229df9"",
+                    ""path"": ""<Mouse>/scroll/up"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""MouseScroll"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""negative"",
+                    ""id"": ""220b63b7-8cd6-4b5e-b99d-caac05e21c89"",
+                    ""path"": ""<Mouse>/scroll/down"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""MouseScroll"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
                 }
             ]
         }
@@ -474,6 +527,7 @@ namespace Soul
             m_Base_Reload = m_Base.FindAction("Reload", throwIfNotFound: true);
             m_Base_MouseX = m_Base.FindAction("MouseX", throwIfNotFound: true);
             m_Base_MouseY = m_Base.FindAction("MouseY", throwIfNotFound: true);
+            m_Base_MouseScroll = m_Base.FindAction("MouseScroll", throwIfNotFound: true);
         }
 
         public void Dispose()
@@ -550,6 +604,7 @@ namespace Soul
         private readonly InputAction m_Base_Reload;
         private readonly InputAction m_Base_MouseX;
         private readonly InputAction m_Base_MouseY;
+        private readonly InputAction m_Base_MouseScroll;
         public struct BaseActions
         {
             private @FPPlayerControls m_Wrapper;
@@ -569,6 +624,7 @@ namespace Soul
             public InputAction @Reload => m_Wrapper.m_Base_Reload;
             public InputAction @MouseX => m_Wrapper.m_Base_MouseX;
             public InputAction @MouseY => m_Wrapper.m_Base_MouseY;
+            public InputAction @MouseScroll => m_Wrapper.m_Base_MouseScroll;
             public InputActionMap Get() { return m_Wrapper.m_Base; }
             public void Enable() { Get().Enable(); }
             public void Disable() { Get().Disable(); }
@@ -623,6 +679,9 @@ namespace Soul
                 @MouseY.started += instance.OnMouseY;
                 @MouseY.performed += instance.OnMouseY;
                 @MouseY.canceled += instance.OnMouseY;
+                @MouseScroll.started += instance.OnMouseScroll;
+                @MouseScroll.performed += instance.OnMouseScroll;
+                @MouseScroll.canceled += instance.OnMouseScroll;
             }
 
             private void UnregisterCallbacks(IBaseActions instance)
@@ -672,6 +731,9 @@ namespace Soul
                 @MouseY.started -= instance.OnMouseY;
                 @MouseY.performed -= instance.OnMouseY;
                 @MouseY.canceled -= instance.OnMouseY;
+                @MouseScroll.started -= instance.OnMouseScroll;
+                @MouseScroll.performed -= instance.OnMouseScroll;
+                @MouseScroll.canceled -= instance.OnMouseScroll;
             }
 
             public void RemoveCallbacks(IBaseActions instance)
@@ -706,6 +768,7 @@ namespace Soul
             void OnReload(InputAction.CallbackContext context);
             void OnMouseX(InputAction.CallbackContext context);
             void OnMouseY(InputAction.CallbackContext context);
+            void OnMouseScroll(InputAction.CallbackContext context);
         }
     }
 }

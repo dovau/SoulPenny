@@ -5000,6 +5000,7 @@ GameObject:
   m_Component:
   - component: {fileID: 918290581}
   - component: {fileID: 918290582}
+  - component: {fileID: 918290583}
   m_Layer: 0
   m_Name: Animation
   m_TagString: Untagged
@@ -5039,6 +5040,35 @@ MonoBehaviour:
   movingClip: {fileID: 7400000, guid: a8869cf4b03fd7b43948f6a4422cf92c, type: 3}
   _Mediator: {fileID: 7253068284801469496}
   _Brain: {fileID: 960738051}
+--- !u!114 &918290583
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 918290580}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2b7b0d03358abfa44a600fbd05b9a39e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mediator: {fileID: 7253068284801469496}
+  brain: {fileID: 960738051}
+  animancer: {fileID: 8886279169415503026}
+  action01:
+    _Asset: {fileID: 11400000, guid: 8c03e19ffe50c4448a5ce6f26d90936f, type: 2}
+  jump:
+    _Asset: {fileID: 11400000, guid: 4f78fbdf843bbe6498a51cc696f1242b, type: 2}
+  _Mixer2D:
+    _Asset: {fileID: 11400000, guid: 13647cff6b4411d44bdf78dd3bcefef4, type: 2}
+  baseMask: {fileID: 31900000, guid: b9d1d34beb8e91343a93f7faac7ea188, type: 2}
+  upperBodyMask: {fileID: 31900000, guid: ac97a5ee3c0895642bd23d2e6ff85c32, type: 2}
+  interactMaskMain: {fileID: 31900000, guid: f424729504ff4e44c86ab401d2dd8ca0, type: 2}
+  interactMaskOffHand: {fileID: 31900000, guid: dd4fb52ba0c5a0a4e90cac6475fd66e9,
+    type: 2}
+  interactMaskBothHands: {fileID: 31900000, guid: 4f5acf115b4807e43834401925b1652a,
+    type: 2}
+  socialMask: {fileID: 31900000, guid: 087bc0c451100d440ad16867618a376e, type: 2}
 --- !u!1001 &954117854
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5166,9 +5196,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   animancer: {fileID: 8886279169415503026}
-  idleClip: {fileID: 7400000, guid: 651f317d09f0c4f409d2d765567d49be, type: 3}
-  walkingClip: {fileID: 7400000, guid: 790dcc5ad501c0b40b70c0b9e7e28950, type: 3}
-  actionClip: {fileID: 7400000, guid: 6b6754727a425b241bd179af348a5153, type: 2}
 --- !u!114 &960738052
 MonoBehaviour:
   m_ObjectHideFlags: 0

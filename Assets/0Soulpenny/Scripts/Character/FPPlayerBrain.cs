@@ -6,6 +6,7 @@ using UnityEngine.InputSystem;
 using Animancer;
 using TMPro;
 using Unity.VisualScripting;
+using System;
 
 namespace Soul
 {
@@ -36,13 +37,11 @@ namespace Soul
 
         [SerializeField]private AnimancerComponent animancer;
         [HideInInspector]public AnimancerComponent Animancer => animancer;
-        //[SerializeField] private AnimationClip currentClip;
-        //[HideInInspector] public AnimationClip CurrentClip => currentClip;
 
-        [SerializeField] private AnimationClip idleClip;
-        [SerializeField] private AnimationClip walkingClip;
-        [SerializeField] private AnimationClip actionClip;
-
+        /// <summary>
+        /// Testing to see if I need to wait for brain to initialize for other scripts
+        /// </summary>
+        public event Action OnBrainInitialized;
 
 
         private InputAction movement;
@@ -59,8 +58,8 @@ namespace Soul
         private InputAction throwAction;
         private InputAction switchAction;
         private InputAction holsterAction;
-        private InputAction alternativeAction;
-
+        private InputAction altModifier;
+        private InputAction interactAltAction;
 
         // Public accessors of InputActions
 
@@ -76,6 +75,10 @@ namespace Soul
         public InputAction SecondaryAction { get { return secondaryAction; } }
         public InputAction InteractAction { get { return interactAction; } }
         public InputAction DropAction { get { return dropAction; } }
+        public InputAction AltModifier { get { return altModifier; } }
+
+        public InputAction InteractAltAction { get { return interactAltAction; } }
+
         // etc testing centralizing input actions so other systems can just subscribe to Brain
 
 
@@ -139,10 +142,9 @@ namespace Soul
             GetCharacter();
             BindControls();
             BindInputActions();
-            SubscribeToInputEventsTemp();
             MediatorNotifyTest();
-            animancer.Play(idleClip); 
 
+            OnBrainInitialized?.Invoke();
 
         }
 
@@ -163,7 +165,8 @@ namespace Soul
             throwAction = controls.Base.Throw;
             switchAction = controls.Base.Switch;
             holsterAction = controls.Base.Holster;
-            alternativeAction = controls.Base.Alternative;
+            altModifier = controls.Base.Alternative;
+
             Debug.Log("Interaction Actions Bound!");
 
         }
@@ -182,21 +185,11 @@ namespace Soul
             controls.Base.Enable();
         }
 
-        private void SubscribeToInputEventsTemp()
-        {
-            movement.performed += HandleWalkTemp;
-            movement.canceled += HandleIdleTemp;
-            interactAction.performed += PlayActionClipTemp;
 
-            movement.Enable();
-            interactAction.Enable();
-
-        }
         protected override void Update()
         {
             base.Update();
 
-            HandleAnimationTemp();
 
 
             if (Input.GetKeyDown(KeyCode.J)) 
@@ -205,43 +198,11 @@ namespace Soul
             }
         }
 
-        private void PlayActionClipTemp(InputAction.CallbackContext context)
-        {
-            AnimancerState state = animancer.Play(actionClip);
-            state.Time = 0; // retrigger
-            state.Events.OnEnd = OnEnable;
 
-        }
-        protected void HandleIdleTemp(InputAction.CallbackContext context)
-        {
-            animancer.Play(idleClip);
-        }
+   
 
-        protected void HandleWalkTemp(InputAction.CallbackContext context)
-        {
-            animancer.Play(walkingClip);
-        }
 
-        protected override void OnEnable()
-        {
-            base.OnEnable();
-            animancer.Play(idleClip);
-            Debug.Log("Action animation ended?");
-        }
-        protected void HandleAnimationTemp()
-        {
-            
-            //var currentState = MovementSM.CurrentState;
 
-            //if(currentState is StandingState)
-            //{
-            //    animancer.Play(idleClip);
-            //}
-            //else if(currentState is WalkingState) 
-            //{
-            //    animancer.Play(walkingClip);
-            //}
-        }
     }
 
 }

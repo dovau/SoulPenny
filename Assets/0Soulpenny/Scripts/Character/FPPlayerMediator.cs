@@ -19,6 +19,9 @@ namespace Soul
         private FPPlayerAbilityManager abilityManager;
         public FPPlayerAbilityManager AbilityManager { get { return abilityManager; } }
 
+        private AnimancerComponent animancer;
+        public AnimancerComponent Animancer { get { return animancer; } }
+
         protected override void Awake()
         {
             base.Awake();
@@ -38,6 +41,9 @@ namespace Soul
             {
                 Debug.Log("Mediator foudn an Ability Manager: "+ abilityManager.GetType().Name);
             }
+
+            animancer = GetComponentInChildren<AnimancerComponent>();
+
             character.SetMediator(this);
             brain.SetMediator(this);
             abilityManager.SetMediator(this);
