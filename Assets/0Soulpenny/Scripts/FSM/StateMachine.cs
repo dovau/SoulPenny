@@ -2,6 +2,8 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
+using Animancer;
 
 namespace Soul
 {
@@ -12,6 +14,13 @@ namespace Soul
 
 
         protected bool isTransitioningState = false;
+
+        //public virtual void Initialize()
+        //{
+
+        //}
+
+
 
         protected virtual void Start()
         {

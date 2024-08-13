@@ -1,0 +1,62 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bced2ab5bb50c88478059b6cee6471ee, type: 3}
+  m_Name: Unarmed Animation Set
+  m_EditorClassIdentifier: 
+  idle:
+    _Asset: {fileID: 11400000, guid: 16977c352f1be07478e5ab2fb46c0f1f, type: 2}
+  useSingle:
+    _Asset: {fileID: 11400000, guid: b316f18fec3d6ba47b9cfe17aa80d673, type: 2}
+  useAuto:
+    _Asset: {fileID: 0}
+  primaryPrepare:
+    _Asset: {fileID: 11400000, guid: 1b02196d994aa2e4a9a952b2afc4139e, type: 2}
+  primarySingle:
+    _Asset: {fileID: 11400000, guid: a340ff3ec7b6b7c44b378e09197a26d2, type: 2}
+  primarySingle01:
+    _Asset: {fileID: 0}
+  primarySingle02:
+    _Asset: {fileID: 0}
+  primarySingle03:
+    _Asset: {fileID: 0}
+  primarySingle04:
+    _Asset: {fileID: 0}
+  primaryHeavyPrepare:
+    _Asset: {fileID: 0}
+  primaryHeavySingle:
+    _Asset: {fileID: 0}
+  primaryHeavyAuto:
+    _Asset: {fileID: 0}
+  primaryAuto:
+    _Asset: {fileID: 0}
+  altPrepare:
+    _Asset: {fileID: 11400000, guid: ce03618065c6aa3409a2efcffef8fb01, type: 2}
+  altSingle:
+    _Asset: {fileID: 11400000, guid: dcbb1d0948ccfe84ca8cb5bfb09c8b87, type: 2}
+  altAuto:
+    _Asset: {fileID: 0}
+  secondarySingle:
+    _Asset: {fileID: 11400000, guid: a2fdfa73d36079344b61e867bd729b38, type: 2}
+  secondaryAuto:
+    _Asset: {fileID: 11400000, guid: a2fdfa73d36079344b61e867bd729b38, type: 2}
+  reload:
+    _Asset: {fileID: 0}
+  throwPrepare:
+    _Asset: {fileID: 0}
+  throwSingle:
+    _Asset: {fileID: 0}
+  throwAuto:
+    _Asset: {fileID: 0}
+  inspectSingle:
+    _Asset: {fileID: 0}
+  inspectAuto:
+    _Asset: {fileID: 0}

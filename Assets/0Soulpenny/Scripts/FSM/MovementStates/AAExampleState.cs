@@ -9,7 +9,7 @@ namespace Soul
     {
         private FPPlayerCharacter character;
         
-        public AAExampleState (StateMachine stateMachine, FPPlayerCharacter character) : base(stateMachine)
+        public AAExampleState (StateMachine stateMachine, FPPlayerCharacter character, AnimationSetMovement animSet) : base(stateMachine, animSet)
         {
             this.character = character;
         }

@@ -9,7 +9,7 @@ namespace Soul
     {
         private FPPlayerCharacter character;
 
-        public xIdleState (StateMachine stateMachine, FPPlayerCharacter character) : base(stateMachine)
+        public xIdleState (StateMachine stateMachine, FPPlayerCharacter character, AnimationSetInteraction animSet) : base(stateMachine, animSet)
         {
             this.character = character;
         }

@@ -1,23 +1,25 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
+using Unity.VisualScripting.ReorderableList;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 namespace Soul
 {
-	public class InteractionStateMachine : StateMachine
-	{
-        private FPPlayerBrain brain;
+    public class InteractionStateMachine : StateMachine
+    {
+        public FPPlayerBrain brain;
+        public AnimationSetInteraction InitialInteractionAnimSet;
+        public AnimationSetInteraction currentInteractionAnimSet;
+        //private bool itemHolstered;
+        public bool ItemHolstered;
+        //private bool canHolster;
+        public bool CanHolster;
 
-        //private InputAction primaryAction;
-        //private InputAction secondaryAction;
-        //public InputAction interactAction;
-        //private InputAction dropAction;
-        //private InputAction throwAction;
-        //private InputAction switchAction;
-        //private InputAction holsterAction;
-        //private InputAction altModifier;
+        public HandType HandType;
+        event Action localBrainInitialized;
 
         public enum InteractionStates
         {
@@ -38,27 +40,60 @@ namespace Soul
             
             //Let's see idk yet
         }
+        private InteractionStates initialState;
+        public InteractionStates InitialState { get { return initialState; } set { initialState = value; } }
 
+        private IState xNoneState;
         private IState xIdleState;
         private IState interactState;
         private IState holdingState;
         private IState useState;
 
+
+        public void Initialize(FPPlayerBrain brain, HandType hand)
+        {
+            this.brain = brain;
+            if (brain != null)
+            {
+                Debug.Log($"InteractionSM: Brain added to: {this.name}");
+
+                //Debug.Log("SM Initialization complete");
+            }
+            HandType = hand;
+            Debug.Log($"InteractionSM {this.name} + hand: {HandType}");
+
+
+
+            if(brain == null)
+            {
+                Debug.Log("Got no brain");
+                //GetBrain();
+
+            }
+            SubscribeToInputEvents();
+        }
+
         private void Awake()
         {
-            Debug.Log("InteractionStateMachine Awake");
-            brain = GetComponent<FPPlayerBrain>();
+            currentInteractionAnimSet = InitialInteractionAnimSet;
+
+        }
+
+        private void OnEnable()
+        {
 
 
+
+        }
+
+        private void OnDisable()
+        {
+            
         }
 
         protected override void Start()
         {
             base.Start();
-
-            //BindInputActions(); // z999 carried over to FPPlayerBrain
-
-            SubscribeToInputEvents();
 
             InitializeStates();
             currentState = xIdleState;
@@ -70,20 +105,31 @@ namespace Soul
         private void InitializeStates()
         {
             Debug.Log("Initializing Interaction States");
-            xIdleState = new xIdleState(this, brain.Character);
-
+            xNoneState = new xNoneState(this, brain.Character, currentInteractionAnimSet) ;
+            xIdleState = new xIdleState(this, brain.Character, currentInteractionAnimSet) ;
         }
+
+        //private void GetBrain()
+        //{
+        //        brain = GetComponent<FPPlayerBrain>();
+        //        Debug.Log("Initialization failed, got brain as component");
+
+        //}
+
         private void SubscribeToInputEvents()
         {
             Debug.Log("Subscribing to Input Events!");
-
+            if(brain == null) { Debug.Log("Brain null"); return; }
             brain.PrimaryAction.performed += HandlePrimaryAction;
             brain.SecondaryAction.performed += HandleSecondaryAction;
             brain.InteractAction.performed += HandleInteractAction;
+
+            brain.HolsterAction.performed += HandleHolsterAction;
             
             brain.PrimaryAction.Enable();
             brain.SecondaryAction.Enable();
             brain.InteractAction.Enable();
+            brain.HolsterAction.Enable();
 
             Debug.Log("Subscribed to Input Events!");
 
@@ -91,28 +137,48 @@ namespace Soul
 
         private void UnSubscribeFromInputEvents()
         {
+            if (brain == null) { return; }
             brain.PrimaryAction.performed -= HandlePrimaryAction;
             brain.SecondaryAction.performed -= HandleSecondaryAction;
             brain.InteractAction.performed -= HandleInteractAction;
+            brain.HolsterAction.performed-= HandleHolsterAction;
 
             brain.PrimaryAction.Disable();
             brain.SecondaryAction.Disable();
             brain.InteractAction.Disable();
+            brain.HolsterAction.Disable();
         }
-        //private void BindInputActions()
-        //{
-        //    Debug.Log("Binding Input Actions: Interactions");
-        //    primaryAction = brain.Controls.Base.Primary;
-        //    secondaryAction = brain.Controls.Base.Secondary;
-        //    interactAction = brain.Controls.Base.Interact;
-        //    dropAction = brain.Controls.Base.Drop;
-        //    throwAction = brain.Controls.Base.Throw;
-        //    switchAction = brain.Controls.Base.Switch;
-        //    holsterAction = brain.Controls.Base.Holster;
-        //    altModifier = brain.Controls.Base.Alternative;
-        //    Debug.Log("Input Actions Bound!");
 
-        //}
+        private void HandleHolsterAction(InputAction.CallbackContext context)
+        {
+            if (ItemHolstered && CanHolster)
+            {
+                Debug.Log("Item was holstered, unholstering / drawing");
+                TransitionToState(xIdleState);
+                ItemHolstered = false;
+                
+            }
+            else if (ItemHolstered && !CanHolster)
+            {
+                
+                Debug.Log("Can't draw / sheathe at the moment");
+                return;
+            }
+            else if (!ItemHolstered && CanHolster)
+            {
+                ItemHolstered= true;
+                TransitionToState(xNoneState);
+                Debug.Log("Item was drawn, holstering / sheathing");
+
+            }
+            else if(!ItemHolstered && !CanHolster) 
+            {
+                Debug.Log("Item was unholstered, but can't holster / sheathe");
+            }
+
+        }
+
+
         private void OnDestroy()
         {
             UnSubscribeFromInputEvents();

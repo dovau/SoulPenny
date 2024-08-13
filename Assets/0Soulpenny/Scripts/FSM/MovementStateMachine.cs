@@ -18,6 +18,9 @@ namespace Soul
         private FPPlayerAbilityManager abilityManager;
         private FPPlayerMediator mediator;
 
+        public AnimationSetMovement InitialMovementAnimSet;
+        [HideInInspector] public AnimationSetMovement CurrentMovementAnimSet;
+
             //private InputAction movement;
             //private InputAction jump;
             //private InputAction crouch;
@@ -56,6 +59,8 @@ namespace Soul
         {
             Debug.Log("MovementStateMachine Awake");
             brain = GetComponent<FPPlayerBrain>();
+
+            CurrentMovementAnimSet = InitialMovementAnimSet;
 
         }
 
@@ -103,9 +108,9 @@ namespace Soul
         private void InitializeStates()
         {
             Debug.Log("Initializing States");
-            standingState = new StandingState(this, brain.Character);
-            walkingState = new WalkingState(this, brain.Character);
-            jumpingState = new JumpingState(this, brain.Character);
+            standingState = new StandingState(this, brain.Character, CurrentMovementAnimSet);
+            walkingState = new WalkingState(this, brain.Character,CurrentMovementAnimSet);
+            jumpingState = new JumpingState(this, brain.Character, CurrentMovementAnimSet);
             // Initialize other states similarly...
         }
 

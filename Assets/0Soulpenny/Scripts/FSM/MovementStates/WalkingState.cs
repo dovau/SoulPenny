@@ -8,7 +8,7 @@ namespace Soul
     public class WalkingState : BaseState
     {
         private FPPlayerCharacter character;
-        public WalkingState(StateMachine stateMachine, FPPlayerCharacter character) : base(stateMachine) { }
+        public WalkingState(StateMachine stateMachine, FPPlayerCharacter character, AnimationSetMovement animSet) : base(stateMachine, animSet) { }
         public override void Enter()
         {
 

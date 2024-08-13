@@ -15,6 +15,9 @@ namespace Soul
 
         private IState neutralState;
 
+        public AnimationSetSocial InitialSocialAnimSet;
+        public AnimationSetSocial CurrentSocialAnimSet;
+
         private void Awake()
         {
             Debug.Log("MovementStateMachine Awake");
@@ -33,7 +36,7 @@ namespace Soul
         private void InitializeStates()
         {
             Debug.Log("Initializing States");
-            neutralState = new scNeutralState(this, brain.Character);
+            neutralState = new scNeutralState(this, brain.Character, CurrentSocialAnimSet);
         }
         private void SubscribeToInputEvents()
         {

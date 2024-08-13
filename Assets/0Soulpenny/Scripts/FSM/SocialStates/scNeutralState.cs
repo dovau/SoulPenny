@@ -8,7 +8,7 @@ namespace Soul
     public class scNeutralState : BaseState
     {
         private FPPlayerCharacter character;
-        public scNeutralState(StateMachine stateMachine, FPPlayerCharacter character) : base(stateMachine) { }
+        public scNeutralState(StateMachine stateMachine, FPPlayerCharacter character, AnimationSetSocial animSet) : base(stateMachine, animSet) { }
 
 
         public override void Enter()

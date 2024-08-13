@@ -1,0 +1,53 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8a2d01d4f425b3848938f199392c9afb, type: 3}
+  m_Name: CrawlDirectional_MT_01
+  m_EditorClassIdentifier: 
+  _Transition:
+    rid: 1444673114315948037
+  references:
+    version: 2
+    RefIds:
+    - rid: 1444673114315948037
+      type: {class: MixerTransition2D, ns: Animancer, asm: Animancer}
+      data:
+        _FadeDuration: 0.01
+        _Events:
+          _NormalizedTimes:
+          - 1
+          _Callbacks: []
+          _Names: []
+        _Speed: 1
+        _Animations:
+        - {fileID: 7400000, guid: 1135ef5cbc28696488225822ac2ac3c6, type: 2}
+        - {fileID: 7400000, guid: 4a8e4e2a081097148ba43991abcf47d8, type: 2}
+        - {fileID: 7400000, guid: 23f7c37703b9bec4595d74a6e8fbb884, type: 2}
+        - {fileID: 7400000, guid: ebe45bd060eb3fe46930ebdc7af7aa78, type: 2}
+        - {fileID: 7400000, guid: 59c24eb02f5966640a949b01327b96eb, type: 2}
+        - {fileID: 7400000, guid: 4a5426521606c804c953147571ef58a7, type: 2}
+        - {fileID: 7400000, guid: 3b2d6068d10289041a450740c694c82b, type: 2}
+        - {fileID: 7400000, guid: 2cdf1210f080a8242acfb600921fcbcd, type: 2}
+        - {fileID: 7400000, guid: 6a13168bb6c7e1246bb691b791d02c09, type: 2}
+        _Speeds: []
+        _SynchronizeChildren: 000000000000000000
+        _Thresholds:
+        - {x: 1, y: 0}
+        - {x: 0.7, y: 0.7}
+        - {x: -1, y: 0}
+        - {x: 0, y: 1}
+        - {x: -0.7, y: 0.7}
+        - {x: 0, y: 0}
+        - {x: 0, y: -1}
+        - {x: -0.7, y: -0.7}
+        - {x: 0.7, y: -0.7}
+        _DefaultParameter: {x: 0, y: 0}
+        _Type: 1

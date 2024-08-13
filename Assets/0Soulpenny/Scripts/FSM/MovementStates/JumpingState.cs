@@ -9,7 +9,7 @@ namespace Soul
     {
         private FPPlayerCharacter character;
 
-        public JumpingState(StateMachine stateMachine, FPPlayerCharacter character) : base(stateMachine)
+        public JumpingState(StateMachine stateMachine, FPPlayerCharacter character, AnimationSetMovement animSet) : base(stateMachine, animSet)
         {
             this.character = character;
         }

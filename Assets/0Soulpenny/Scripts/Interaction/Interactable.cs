@@ -8,10 +8,13 @@ namespace Soul
     {
         public Renderer[] renderers;
 
-        [SerializeField] private string itemName;
+        public string ItemName { get; set; }
+
         [SerializeField] private string description;
-        public string GetItemName() => itemName;
+
+        public ItemType ItemType { get; set; }
         public string GetDescription() => description;
+        public string GetItemName() => ItemName;
 
         private Dictionary<Renderer, Material[]> originalMaterials = new Dictionary<Renderer, Material[]>();
 

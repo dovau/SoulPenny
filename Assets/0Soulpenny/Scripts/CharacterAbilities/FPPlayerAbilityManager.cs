@@ -15,7 +15,13 @@ namespace Soul
 
         public FPPlayerMediator Mediator => _mediator;
 
-        private List<PlayerAbility> _abilities = new List<PlayerAbility>();
+        private List<PlayerAbility> currentAbilities = new List<PlayerAbility>();
+        public List<PlayerAbility> CurrentAbilities => currentAbilities;
+
+        public List<PlayerAbility> activeAbilities = new List<PlayerAbility>();
+        public List<PlayerAbility> ActiveAbilities => activeAbilities;
+
+        
 
         protected override void Awake()
         {
@@ -87,31 +93,31 @@ namespace Soul
 
         private void LogCurrentAbilities()
         {
-            Debug.Log("Number of abilities found: " + _abilities.Count);
+            Debug.Log("Number of abilities found: " + currentAbilities.Count);
 
-            string abilitiesList = string.Join(", ", _abilities.Select(a => a.ToString()));
+            string abilitiesList = string.Join(", ", currentAbilities.Select(a => a.ToString()));
             Debug.Log("Current abilities are: " + abilitiesList);
         }
 
         public void AddAbility(PlayerAbility ability)
         {
-            if (!_abilities.Contains(ability))
+            if (!currentAbilities.Contains(ability))
             {
-                _abilities.Add(ability);
+                currentAbilities.Add(ability);
                 ability.Initialize(_playerCharacter, _brain, this);
             }
         }
         public void RemoveAbility(PlayerAbility ability)
         {
-            if (_abilities.Contains(ability))
+            if (currentAbilities.Contains(ability))
             {
-                _abilities.Remove(ability);
+                currentAbilities.Remove(ability);
             }
         }
 
         public T GetAbility<T>()where T : PlayerAbility
         {
-            foreach (var ability in _abilities)
+            foreach (var ability in currentAbilities)
             {
                 if(ability is T)
                 {

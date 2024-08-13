@@ -6,14 +6,14 @@ using Animancer;
 
 namespace Soul
 {
-    public class StandingState : BaseState
+    public class StandingState : MovementStateBase
     {
         [SerializeField] private FPPlayerCharacter character;
         [SerializeField] private FPPlayerBrain brain;
         
         public AnimationClip clip;
 
-        public StandingState (StateMachine stateMachine, FPPlayerCharacter character) : base(stateMachine) 
+        public StandingState (StateMachine stateMachine, FPPlayerCharacter character, AnimationSetMovement animSet) : base(stateMachine, animSet) 
         {
             this.character = character;
         }

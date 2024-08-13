@@ -26,8 +26,16 @@ namespace Soul
         private MovementStateMachine movementSM;
         public MovementStateMachine MovementSM => movementSM;
 
-        private InteractionStateMachine interactSM;
-        public InteractionStateMachine InteractionSM => interactSM;
+
+        //These were before the constructor of Interaction State Machine
+        //private InteractionStateMachine interactSM;
+        //public InteractionStateMachine InteractionSM => interactSM; 
+
+        private InteractionStateMachine interactionSMMain;
+        public InteractionStateMachine InteractionSMMain => interactionSMMain;
+
+        private InteractionStateMachine interactionSMOff;
+        public InteractionStateMachine InteractionSMOff => interactionSMOff;
 
         private SocialStateMachine socialSM;
         public SocialStateMachine SocialSM => socialSM;
@@ -76,8 +84,9 @@ namespace Soul
         public InputAction InteractAction { get { return interactAction; } }
         public InputAction DropAction { get { return dropAction; } }
         public InputAction AltModifier { get { return altModifier; } }
-
         public InputAction InteractAltAction { get { return interactAltAction; } }
+
+        public InputAction HolsterAction {  get { return holsterAction; } }
 
         // etc testing centralizing input actions so other systems can just subscribe to Brain
 
@@ -105,7 +114,6 @@ namespace Soul
 
         private void GetCharacter()
         {
-            //_character = GetComponentInParent<FPPlayerCharacter>();
             _character = Mediator.Character;
             if (_character == null)
             {
@@ -123,16 +131,34 @@ namespace Soul
             {
                 Debug.Log("Movement State Machine found");
             }
-            interactSM = GetComponent<InteractionStateMachine>();
-            if (interactSM != null)
+
+
+
+
+            if (InteractionSMMain != null)
             {
-                Debug.Log("Interaction State Machine found");
+                Debug.Log("Main Interaction State Machine found: Handtype ---  " + interactionSMOff.HandType + " --- ");
+            }
+            if (InteractionSMOff != null)
+            {
+                Debug.Log("Off-Interaction State Machine found: Handtype --- " + interactionSMOff.HandType + " --- "); 
             }
             socialSM = GetComponent<SocialStateMachine>();
             if (socialSM != null)
             {
                 Debug.Log("Social State Machine found");
             }
+
+        }
+
+        private void CreateStateMachines()
+        {
+            interactionSMMain = gameObject.AddComponent<InteractionStateMachine>();
+            interactionSMMain.Initialize(this, HandType.Main);
+
+
+            interactionSMOff = gameObject.AddComponent<InteractionStateMachine>();
+            interactionSMOff.Initialize(this, HandType.Off);
 
         }
 
@@ -145,6 +171,7 @@ namespace Soul
             MediatorNotifyTest();
 
             OnBrainInitialized?.Invoke();
+            CreateStateMachines();
 
         }
 
@@ -155,6 +182,7 @@ namespace Soul
             movement = controls.Base.Move;
             jump = controls.Base.Jump;
             crouch = controls.Base.Crouch;
+            
             sprint = controls.Base.Sprint;
             Debug.Log("Movement Actions Bound!");
             Debug.Log("Binding Input Actions: Interactions");
